@@ -8,16 +8,6 @@ get_tomatoes = function(person) {
   
   celeb_url = sprintf("https://www.rottentomatoes.com/celebrity/%s/", person_string)
   
-  # Scraping the filmography table using rvest
-  # got the Xpath / CSS id of the table
-  film_tables = celeb_url %>%
-    read_html() %>%
-    html_nodes(xpath = "//*[@id='filmographyTbl']") %>%
-    html_table()
-  
-  films = film_tables[[1]]
-  
-  names(films) = tolower(names(films))
   
   # Function to decode rotten tomatoes
   # credit string into english
@@ -49,24 +39,43 @@ get_tomatoes = function(person) {
       
       # Must be a producer or some shit
       return("Null")
-    
+      
     }
     
   }
   
-  
-  films = 
-    films %>%
-    rowwise() %>%
-    mutate(
-      role = assign_role(credit),
-      rating = str_replace_all(rating, "\\%", "")
-    ) %>%
-    select(-credit) %>%
-    filter(
-      rating != "No Score Yet",
-      role != "Null"
-    )
+  # Scraping the filmography table using rvest
+  # got the Xpath / CSS id of the table
+  film_tables = tryCatch(
+    {
+      
+    film_tables = celeb_url %>%
+      read_html() %>%
+      html_nodes(xpath = "//*[@id='filmographyTbl']") %>%
+      html_table()
+    
+    films = film_tables[[1]]
+    
+    names(films) = tolower(names(films))
+    
+    films = 
+      films %>%
+      rowwise() %>%
+      mutate(
+        role = assign_role(credit),
+        rating = str_replace_all(rating, "\\%", "")
+      ) %>%
+      select(-credit) %>%
+      filter(
+        rating != "No Score Yet",
+        role != "Null"
+      )
+
+    }, error = function(e) {
+      message("Actor or director not found")  
+      return(NA)
+    }
+  )
   
   return(films)
     
