@@ -29,7 +29,9 @@ get_tomatoes = function(person) {
     
     if (grepl("director", credit_string, ignore.case = TRUE)){
       
-      if (grepl("(actor)|[a-z]{3,}", credit_string, ignore.case = TRUE)) {
+      aug = str_replace_all(credit_string, "(?i)director", "")
+      
+      if (grepl("(actor)|[a-z]{3,}", aug, ignore.case = TRUE)) {
         
         return("Actor / Director")
         
