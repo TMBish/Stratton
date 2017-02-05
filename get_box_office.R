@@ -45,11 +45,15 @@ get_box_office = function(films) {
     mojo_page = 
       film_url %>%
       read_html() %>%
-      html_nodes("td") %>%
+      html_nodes("b") %>%
       html_text()
     
-    grep("= Worldwide:", mojo_page)
+    ind = grep("Worldwide:", mojo_page)
     
+    revenue = as.integer(str_replace_all(mojo_page[ind + 1], "(\\$)|(,)",""))
+    
+    cost = 
+      
     revenue = str_extract(mojo_page, "(?i)(?<=Worldwide: \\$)[0-9]+")
 
     
