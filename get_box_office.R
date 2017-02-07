@@ -53,6 +53,7 @@ get_box_office = function(films) {
         
         film_url = format_url(film_title)
         
+        # Look up bold elements on the mojo page
         mojo_page = 
           film_url %>%
           read_html() %>%
@@ -63,6 +64,7 @@ get_box_office = function(films) {
         
         revenue = as.integer(str_replace_all(mojo_page[ind + 1], "(\\$)|(,)",""))
         
+        # Cost line is unfortunately fixed
         cost_string = mojo_page[9]
         
         # Some handy formatting on the production cost!
@@ -73,17 +75,18 @@ get_box_office = function(films) {
           
         } else {
           
+          # Reformat "million / thousand" string
           magnitude = str_extract(cost_string, "(?i)million|thousand")
           
           multipler = ifelse(magnitude == "million", 1000000, 1000)
           
-          cost = as.numeric(str_replace_all(cost_string, "(\\$)|([a-z])","")) * multipler
+          cost = as.integer(str_replace_all(cost_string, "(\\$)|([a-z])","")) * multipler
           
         }
         
         # Fill the vec with the vals
         cash_money[i] = revenue
-        cost_money[i] = as.integer(cost)
+        cost_money[i] = cost
       }, error = function(e) { 
         
         cash_money[i] = NA
@@ -94,7 +97,7 @@ get_box_office = function(films) {
   }
   
   films$intl_revenue = cash_money
-  films$prod_cost = cost_money
+  films$prod_cost = as.integer(cost_money)
   return(films %>% filter(intl_revenue > 0))
   
 }
