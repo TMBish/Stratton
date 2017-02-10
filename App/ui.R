@@ -1,5 +1,6 @@
 
 library(shiny)
+library(shinyBS)
 
 # Define UI for application that draws a histogram
 shinyUI(
@@ -32,16 +33,19 @@ shinyUI(
     
     
     # Application title
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("Stratton: an interactive tool for films"),
     
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
       sidebarPanel(id="sidebar",
-        sliderInput("bins",
-                    "Number of bins:",
-                    min = 1,
-                    max = 50,
-                    value = 30)
+      
+                   textInput("search_input", "Choose a Movie Director:"),
+                   
+                   bsButton("search", 
+                            "Cluster",
+                            icon = icon("refresh"),
+                            style = "info"
+                   )
       ),
       
       # Show a plot of the generated distribution
