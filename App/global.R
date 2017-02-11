@@ -1,7 +1,21 @@
-
+library(readr)
+library(dplyr)
+options(stringsAsFactors = FALSE)
 
 # Type-ahead Lists ---------------------------------------------------------
+actors_list = read_csv('./data/actors.csv') %>%
+  mutate(Name = enc2utf8(Name))
 
+directors_list = read_csv('./data/directors.csv') %>%
+  mutate(Name = enc2utf8(Name))
+
+actor_director = actors_list %>% inner_join(directors_list)
+
+typeahead_data = 
+  cbind(actors_list, data.frame(Role = rep("Actor",1000))) %>%
+  anti_join(actor_director) %>%
+  union_all(cbind(directors_list, data.frame(Role = rep("Director", 250)))) %>%
+  union_all(cbind(actor_director, data.frame(Role = rep("Actor / Director", nrow(actor_director)))))
 
 # Rotten Tomatoes ---------------------------------------------------------
 get_tomatoes = function(person) {

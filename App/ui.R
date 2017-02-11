@@ -1,6 +1,7 @@
 
 library(shiny)
 library(shinyBS)
+library(shinysky)
 
 # Define UI for application that draws a histogram
 shinyUI(
@@ -39,7 +40,18 @@ shinyUI(
     sidebarLayout(
       sidebarPanel(id="sidebar",
       
-                   textInput("search_input", "Choose a Movie Director:"),
+                   h3("Enter the name of an Actor or Director:"),
+                   
+                   textInput.typeahead(
+                     id="search_input",
+                     placeholder="e.g. Keanu Reeves",
+                     local= typeahead_data,
+                     valueKey = "Name",
+                     tokens=c(1,2),
+                     template = HTML("<p class='repo-language'>{{Role}}</p> <p class='repo-name'>{{Name}}</p>")
+                     ), 
+                   
+                   
                    
                    bsButton("search", 
                             "Cluster",
