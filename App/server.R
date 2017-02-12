@@ -2,11 +2,14 @@
 library(shiny)
 
 # Server logic
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
    
   
   # Event to run when user selects new person
-  observeEvent(input$do, {
+  observeEvent(input$search, {
+    
+    # Alert the client
+    session$sendCustomMessage(type = 'testmessage', message = list(input$search_input))
     
     # Currently selected actor
     sel_search = input$search_input
@@ -19,6 +22,8 @@ shinyServer(function(input, output) {
     
     # Save as the master data-set
     data_set = sel_films_comp
+    
+    
     
   })
   

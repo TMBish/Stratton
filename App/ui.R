@@ -7,6 +7,9 @@ library(shinysky)
 shinyUI(
   fluidPage(
     
+    # Javascript and CSS ------------------------------------------------------
+    
+    # Custom CSS
     tags$head(
       tags$style(
         HTML('
@@ -24,9 +27,11 @@ shinyUI(
          }')
       ),
       
-      tags$style(
-        '<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">'
-      )
+      # JS Alert for Debugging
+      tags$head(tags$script(src = "message-handler.js")),
+      
+      # Arvo google font
+      tags$style('<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">')
       
       
     ),
@@ -63,7 +68,9 @@ shinyUI(
       
       # Show a plot of the generated distribution
       mainPanel(
-        plotOutput("distPlot")
+        dataTableOutput("data_set")
       )
     )
   ))
+
+
