@@ -3,11 +3,9 @@ library(dplyr)
 options(stringsAsFactors = FALSE)
 
 # Type-ahead Lists ---------------------------------------------------------
-actors_list = read_csv('./data/actors.csv') %>%
-  mutate(Name = enc2utf8(Name))
+actors_list = read_csv('./data/actors.csv')
 
-directors_list = read_csv('./data/directors.csv') %>%
-  mutate(Name = enc2utf8(Name))
+directors_list = read_csv('./data/directors.csv')
 
 actor_director = actors_list %>% inner_join(directors_list)
 
