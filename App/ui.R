@@ -47,7 +47,7 @@ shinyUI(
                      placeholder="e.g. Keanu Reeves",
                      local= typeahead_data,
                      valueKey = "Name",
-                     tokens=c(1,2),
+                     tokens=seq(1,nrow(typeahead_data)),
                      template = HTML("<p class='repo-language'>{{Role}}</p> <p class='repo-name'>{{Name}}</p>")
                      ), 
                    
