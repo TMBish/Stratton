@@ -1,18 +1,36 @@
 
 library(shiny)
 
-# Define server logic required to draw a histogram
+# Server logic
 shinyServer(function(input, output) {
    
-  output$distPlot <- renderPlot({
+  
+  # Event to run when user selects new person
+  observeEvent(input$do, {
     
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2] 
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    # Currently selected actor
+    sel_search = input$search_input
     
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    # Get rotten tomatoes data for this person
+    sel_films = get_tomatoes(sel_search)
+    
+    # Get box office data for this person
+    sel_films_comp = get_box_office(sel_films)
+    
+    # Save as the master data-set
+    data_set = sel_films_comp
     
   })
+  
+  output$data_set = renderDataTable({
+    
+    return(data_set)
+    
+  })
+  
+  
+  
+  
+  
   
 })

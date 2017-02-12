@@ -9,7 +9,7 @@ shinyUI(
     
     tags$head(
       tags$style(
-      HTML('
+        HTML('
          #sidebar {
          background-color: #F2B231;
          }
@@ -22,13 +22,13 @@ shinyUI(
           font-family: "Arvo", sans-serif;
           font-weight: bold;
          }')
-    ),
-    
-    tags$style(
-      '<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">'
-    )
-    
-    
+      ),
+      
+      tags$style(
+        '<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">'
+      )
+      
+      
     ),
     
     
@@ -39,17 +39,18 @@ shinyUI(
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
       sidebarPanel(id="sidebar",
-      
+                   
+                   # Actor / Director Input Box
                    h3("Enter the name of an Actor or Director:"),
                    
                    textInput.typeahead(
                      id="search_input",
-                     placeholder="e.g. Keanu Reeves",
+                     placeholder="e.g. Joseph Gordon-Levitt",
                      local= typeahead_data,
                      valueKey = "Name",
                      tokens=seq(1,nrow(typeahead_data)),
                      template = HTML("<p class='repo-language'>{{Role}}</p> <p class='repo-name'>{{Name}}</p>")
-                     ), 
+                   ), 
                    
                    
                    
