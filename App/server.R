@@ -31,7 +31,7 @@ shinyServer(function(input, output, session) {
   output$data_set = 
     renderDataTable(revals$data_set,
                     options = list(
-                      pageLength = 5,
+                      pageLength = 20,
                       initComplete = I("function(settings, json) {alert('Done.');}")
                     ))
   

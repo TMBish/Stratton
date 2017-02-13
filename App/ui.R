@@ -20,6 +20,13 @@ shinyUI(
          body, label, input, button, select { 
          font-family: "Arial";
          }
+
+         #body_div {
+          background-color: #D3D3D3;
+          border-radius: 25px;
+          widtht: 300px;
+          height: 300px;
+         }
            
          h2 {
           font-family: "Arvo", sans-serif;
@@ -38,9 +45,13 @@ shinyUI(
     
     
     
+    # Application Body --------------------------------------------------------
+    
     # Application title
     titlePanel("Stratton: an interactive tool for films"),
     
+    
+      # Sidebar -----------------------------------------------------------------
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
       sidebarPanel(id="sidebar",
@@ -66,11 +77,25 @@ shinyUI(
                    )
       ),
       
-      # Show a plot of the generated distribution
+      
+      
+      
+      # Body --------------------------------------------------------------------
       mainPanel(
+        
+        tags$div(id = "body_div",
+        
         dataTableOutput("data_set")
+        
+        )
       )
     )
   ))
+
+
+
+
+
+
 
 
