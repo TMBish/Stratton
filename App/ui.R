@@ -8,7 +8,6 @@ shinyUI(
   fluidPage(
     
     # Javascript and CSS ------------------------------------------------------
-    
     # Custom CSS
     tags$head(
       tags$style(
@@ -42,8 +41,6 @@ shinyUI(
       
       
     ),
-    
-    
     
     # Application Body --------------------------------------------------------
     

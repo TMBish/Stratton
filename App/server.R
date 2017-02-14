@@ -28,6 +28,7 @@ shinyServer(function(input, output, session) {
     
   })
   
+  # Output dataset for debugging
   output$data_set = 
     renderDataTable(revals$data_set,
                     options = list(
