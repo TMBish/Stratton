@@ -89,7 +89,8 @@ get_tomatoes = function(person) {
         filter(
           rating != "No Score Yet",
           role != "Null"
-        )
+        ) %>%
+        mutate(rating = as.integer(rating))
       
     }, error = function(e) {
       message("Actor or director not found")  
@@ -100,6 +101,8 @@ get_tomatoes = function(person) {
   return(films)
   
 }
+
+
 
 
 # Box Office Mojo ---------------------------------------------------------
@@ -210,6 +213,7 @@ get_box_office = function(films) {
 
 
 
+
 # Produce Graph -----------------------------------------------------------
 chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
   
@@ -223,13 +227,16 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
                         , "intl_revenue" = "Box Office Revenue")
   
   ggplot(data = df, aes_string(y = axes[1], x = axes[2])) +
-    geom_point() +
+    geom_point(size = 2.5) +
     scale_y_continuous(limits = c(0,100)) +
+    scale_x_comma() +
     labs(x=x_lab, y=y_lab,
          title="Test plot",
          subtitle="A plot that is only useful for demonstration purposes",
          caption="Powered by Tom Bishop and OSIRIS") +
-    theme_ipsum()
-  
+    theme_ipsum_rc(grid="XY") +
+    theme(axis.line.x = element_line(color="black"),
+          axis.line.y = element_line(color="black"))
+    
 }
 
