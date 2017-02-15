@@ -1,5 +1,7 @@
 library(readr)
 library(dplyr)
+library(hrbrtheme)
+
 options(stringsAsFactors = FALSE)
 
 # Type-ahead Lists ---------------------------------------------------------
@@ -202,6 +204,32 @@ get_box_office = function(films) {
   films$intl_revenue = cash_money
   films$prod_cost = as.integer(cost_money)
   return(films %>% filter(intl_revenue > 0))
+  
+}
+
+
+
+
+# Produce Graph -----------------------------------------------------------
+chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
+  
+  require(ggplot2)
+  require(hrbrthemes)
+  require(gcookbook)
+  
+  x_lab = switch(axes[2], "rating" = "Rotten Tomatoes Score"
+                        , "intl_revenue" = "Box Office Revenue")
+  y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
+                        , "intl_revenue" = "Box Office Revenue")
+  
+  ggplot(data = df, aes(y = axes[1], x = axes[2])) +
+    geom_point() +
+    scale_y_discrete(limits = c(0,100)) + 
+    labs(x=x_lab, y=y_lab,
+         title="Test plot",
+         subtitle="A plot that is only useful for demonstration purposes",
+         caption="Powered by Tom Bishop and OSIRIS") + 
+    theme_ipsum()
   
 }
 
