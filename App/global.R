@@ -222,13 +222,13 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
   y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
                         , "intl_revenue" = "Box Office Revenue")
   
-  ggplot(data = df, aes(y = axes[1], x = axes[2])) +
+  ggplot(data = df, aes_string(y = axes[1], x = axes[2])) +
     geom_point() +
-    scale_y_discrete(limits = c(0,100)) + 
+    scale_y_continuous(limits = c(0,100)) +
     labs(x=x_lab, y=y_lab,
          title="Test plot",
          subtitle="A plot that is only useful for demonstration purposes",
-         caption="Powered by Tom Bishop and OSIRIS") + 
+         caption="Powered by Tom Bishop and OSIRIS") +
     theme_ipsum()
   
 }
