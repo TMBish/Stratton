@@ -106,22 +106,12 @@ get_tomatoes = function(person) {
 
 
 # Box Office Mojo ---------------------------------------------------------
-get_box_office = function(films) {
+get_financials = function(film) {
   
   require(assertthat)
   require(dplyr)
   require(rvest)
   require(stringr)
-  
-  # Using a films data frame from the get_tomatoes function
-  assert_that(
-    nrow(films) >= 1 &&
-      ncol(films) == 4 &&
-      "tbl_df" %in% class(films))
-  
-  # We'll iteratively find the box office gross for the films in the table
-  cash_money = rep(0, nrow(films))
-  cost_money = rep(0, nrow(films))
   
   # Box office mojo seems to have a specific URL structure, including:
   # 1. Dropping a leading "The" for movies starting with the word
@@ -151,64 +141,83 @@ get_box_office = function(films) {
     
   }
   
-  
-  for (i in 1:nrow(films)) {
+  v = tryCatch({
     
-    tryCatch(
+    film_url = format_url(film)
+    
+    # Look up bold elements on the mojo page
+    mojo_page = 
+      film_url %>%
+      read_html() %>%
+      html_nodes("b") %>%
+      html_text()
+    
+    ind = grep("Worldwide:", mojo_page, ignore.case = TRUE)
+    
+    revenue = as.integer(str_replace_all(mojo_page[ind + 1], "(\\$)|(,)",""))
+    
+    # Cost line is unfortunately fixed
+    cost_string = mojo_page[9]
+    
+    # Some handy formatting on the production cost!
+    # Thanks box office mojo!
+    if (cost_string == "N/A") {
       
-      {
-        film_title = films[i, "title"]
-        
-        film_url = format_url(film_title)
-        
-        # Look up bold elements on the mojo page
-        mojo_page = 
-          film_url %>%
-          read_html() %>%
-          html_nodes("b") %>%
-          html_text()
-        
-        ind = grep("Worldwide:", mojo_page, ignore.case = TRUE)
-        
-        revenue = as.integer(str_replace_all(mojo_page[ind + 1], "(\\$)|(,)",""))
-        
-        # Cost line is unfortunately fixed
-        cost_string = mojo_page[9]
-        
-        # Some handy formatting on the production cost!
-        # Thanks box office mojo!
-        if (cost_string == "N/A") {
-          
-          cost = NA
-          
-        } else {
-          
-          # Reformat "million / thousand" string
-          magnitude = str_extract(cost_string, "(?i)million|thousand")
-          
-          multipler = ifelse(magnitude == "million", 1000000, 1000)
-          
-          cost = as.integer(str_replace_all(cost_string, "(\\$)|([a-z])","")) * multipler
-          
-        }
-        
-        # Fill the vec with the vals
-        cash_money[i] = revenue
-        cost_money[i] = cost
-      }, error = function(e) { 
-        
-        cash_money[i] = NA
-        cost_money[i] = NA
-        
-      })
+      cost = NA
+      
+    } else {
+      
+      # Reformat "million / thousand" string
+      magnitude = str_extract(cost_string, "(?i)million|thousand")
+      
+      multipler = ifelse(magnitude == "million", 1000000, 1000)
+      
+      cost = as.integer(str_replace_all(cost_string, "(\\$)|([a-z])","")) * multipler
+      
+    }
     
-  }
+    return(c(revenue, cost))
+    
+  }, error = function(e) {
+    
+    return(c(NA,NA))
+    
+  })
   
-  films$intl_revenue = cash_money
-  films$prod_cost = as.integer(cost_money)
-  return(films %>% filter(intl_revenue > 0))
+  return(v)
   
 }
+
+append_box_office = function(films){
+  
+  require(parallel)
+  
+  #+++++++++++++++++++++
+  # Begin Multi-Thread'n
+  #+++++++++++++++++++++
+  
+  # Use most of the comp cores
+  no_cores = detectCores() - 2
+  
+  # Initiate cluster
+  cl = makeCluster(no_cores)
+  
+  test = parLapply(cl, films$title, get_financials)
+  
+  stopCluster(cl)
+  
+  #+++++++++++++++++++
+  # End Multi-Thread'n
+  #+++++++++++++++++++
+  
+  films$intl_revenue = sapply(test, "[", 1)
+  
+  films$prod_cost = sapply(test, "[", 2)
+  
+  return(films)
+  
+}
+
 
 
 
@@ -228,7 +237,7 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
   
   ggplot(data = df, aes_string(y = axes[1], x = axes[2])) +
     geom_point(size = 2.5) +
-    scale_y_continuous(limits = c(0,100)) +
+    scale_y_continuous(limits = c(0,100)) 
     scale_x_comma() +
     labs(x=x_lab, y=y_lab,
          title="Test plot",
@@ -239,4 +248,3 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
           axis.line.y = element_line(color="black"))
     
 }
-

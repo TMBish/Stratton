@@ -33,7 +33,7 @@ get_financials = function(film) {
     
   }
   
-  tryCatch({
+  v = tryCatch({
     
     film_url = format_url(film)
     
@@ -43,9 +43,6 @@ get_financials = function(film) {
       read_html() %>%
       html_nodes("b") %>%
       html_text()
-    
-    # Raise an error if noting on page
-    if (length(mojo_page)==2) {stop()}
     
     ind = grep("Worldwide:", mojo_page, ignore.case = TRUE)
     
@@ -71,25 +68,51 @@ get_financials = function(film) {
       
     }
     
+    return(c(revenue, cost))
+    
   }, error = function(e) {
     
-    revenue = NA
-    cost = NA
+    return(c(NA,NA))
     
   })
   
-  return(list(revenue, cost))
+  return(v)
   
 }
-
-
 
 append_box_office = function(films){
   
+  require(parallel)
   
+  #+++++++++++++++++++++
+  # Begin Multi-Thread'n
+  #+++++++++++++++++++++
+  
+  # Use most of the comp cores
+  no_cores = detectCores() - 2
+  
+  # Initiate cluster
+  cl = makeCluster(no_cores)
+  
+  test = parLapply(cl, films$title, get_financials)
+  
+  stopCluster(cl)
+  
+  #+++++++++++++++++++
+  # End Multi-Thread'n
+  #+++++++++++++++++++
+  
+  films$intl_revenue = sapply(test, "[", 1)
+
+  films$prod_cost = sapply(test, "[", 2)
+  
+  return(films)
   
 }
 
+
+
+# this function has been deprecated
 get_box_office2 = function(films) {
   
   require(assertthat)
