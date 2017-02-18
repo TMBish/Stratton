@@ -1,6 +1,6 @@
 library(readr)
 library(dplyr)
-library(hrbrtheme)
+library(hrbrthemes)
 
 options(stringsAsFactors = FALSE)
 
@@ -78,11 +78,11 @@ get_tomatoes = function(person) {
       
       names(films) = tolower(names(films))
       
+      films$role = lapply(films$credit, assign_role)
+      
       films = 
         films %>%
-        rowwise() %>%
         mutate(
-          role = assign_role(credit),
           rating = str_replace_all(rating, "\\%", "")
         ) %>%
         select(-credit) %>%
@@ -217,6 +217,7 @@ append_box_office = function(films){
   return(films)
   
 }
+
 
 
 

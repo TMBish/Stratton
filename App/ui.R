@@ -81,9 +81,14 @@ shinyUI(
       mainPanel(
         
         tags$div(id = "body_div",
+                 
+                 tabsetPanel(
+                   tabPanel("Chart", plotOutput('chart')), 
+                   tabPanel("Timeline"), 
+                   tabPanel("Raw Data", dataTableOutput("data_set"))
+                 )
         
-        dataTableOutput("data_set")
-        
+
         )
       )
     )

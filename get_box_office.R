@@ -113,6 +113,7 @@ append_box_office = function(films){
 
 
 # this function has been deprecated
+# don't use
 get_box_office2 = function(films) {
   
   require(assertthat)
