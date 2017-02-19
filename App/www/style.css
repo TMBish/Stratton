@@ -1,0 +1,19 @@
+#sidebar {
+  background-color: #F2B231;
+}
+
+body, label, input, button, select { 
+  font-family: "Arial";
+}
+
+#body_div {
+  background-color: #D3D3D3;
+  border-radius: 25px;
+  widtht: 300px;
+  height: 300px;
+}
+ 
+h2 {
+  font-family: "Arvo", sans-serif;
+  font-weight: bold;
+}

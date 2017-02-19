@@ -238,7 +238,7 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
   
   ggplot(data = df, aes_string(y = axes[1], x = axes[2])) +
     geom_point(size = 2.5) +
-    scale_y_continuous(limits = c(0,100)) 
+    scale_y_continuous(limits = c(0,100)) +
     scale_x_comma() +
     labs(x=x_lab, y=y_lab,
          title="Test plot",
