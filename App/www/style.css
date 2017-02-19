@@ -1,16 +1,36 @@
-#sidebar {
+/*#sidebar {
   background-color: #F2B231;
+}*/
+
+body {
+  background: url("background.jpg") repeat;
 }
 
 body, label, input, button, select { 
   font-family: "Arial";
 }
 
-#body_div {
+/*#body_div {
   background-color: #D3D3D3;
   border-radius: 25px;
   widtht: 300px;
   height: 300px;
+}
+ */
+
+#headerSection {
+  margin: -25px 0 20px;
+  color: #FAFAFA;
+  padding: 15px 20px;
+  box-shadow: 0 0 7px #000;
+  background: #232526;
+  background: -webkit-linear-gradient(to left, #232526 , #414345);
+  background: linear-gradient(to left, #232526 , #414345);
+} 
+
+#headerSection a {
+  color: white !important;
+  text-decoration: underline;
 }
  
 h2 {
