@@ -18,6 +18,12 @@ body, label, input, button, select {
 }
  */
 
+#header_logo {
+  height: 125px;
+  position: relative;
+}
+
+
 #headerSection {
   margin: -25px 0 20px;
   color: #FAFAFA;

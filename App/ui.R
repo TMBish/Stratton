@@ -23,6 +23,12 @@ shinyUI(
     
     # App Header
     div(id = "headerSection",
+        
+        tags$img(
+          id = "header_logo",
+          src = "icon_black.jpg"
+        ),
+        
         h1("Stratton: an interactive tool for films"),
         
         # author info
@@ -84,11 +90,4 @@ shinyUI(
       )
     )
   ))
-
-
-
-
-
-
-
 
