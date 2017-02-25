@@ -2,6 +2,8 @@
   background-color: #F2B231;
 }*/
 
+@import url('//fonts.googleapis.com/css?family=Arvo');
+
 body {
   background: url("background.jpg") repeat;
 }
@@ -29,9 +31,7 @@ body, label, input, button, select {
   color: #FAFAFA;
   padding: 15px 20px;
   box-shadow: 0 0 7px #000;
-  background: #232526;
-  background: -webkit-linear-gradient(to left, #232526 , #414345);
-  background: linear-gradient(to left, #232526 , #414345);
+  background: #000000;
 } 
 
 #headerSection a {
@@ -39,7 +39,7 @@ body, label, input, button, select {
   text-decoration: underline;
 }
  
-h2 {
-  font-family: "Arvo", sans-serif;
+h1 {
+  font-family: "Arvo", serif;
   font-weight: bold;
 }

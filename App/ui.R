@@ -13,10 +13,9 @@ shinyUI(
       tags$head(
         includeScript(file.path('www', 'message-handler.js')),
         includeCSS(file.path('www', 'style.css'))
-      ),
-      # Arvo google font
-      tags$style('<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">')
-      
+        # Arvo google font
+        #tags$style(HTML('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arvo">'))
+      )
     ),
     
     # Application Body --------------------------------------------------------
@@ -24,12 +23,12 @@ shinyUI(
     # App Header
     div(id = "headerSection",
         
-        tags$img(
-          id = "header_logo",
-          src = "icon_black.jpg"
-        ),
+        # tags$img(
+        #   id = "header_logo",
+        #   src = "icon_black.jpg"
+        # ),
         
-        h1("Stratton: an interactive tool for films"),
+        h1("STRATTON"),
         
         # author info
         span(
