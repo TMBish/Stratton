@@ -44,7 +44,9 @@ shinyServer(function(input, output, session) {
         
         d = filter(revals$data_set, !is.na(intl_revenue))
         
-        chart_cluster(d)
+        cl_d = cluster_df(d)
+        
+        chart_cluster(cl_d)
         
       }
       

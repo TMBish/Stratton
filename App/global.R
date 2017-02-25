@@ -219,9 +219,18 @@ append_box_office = function(films){
 }
 
 
-
-
-
+# Perform Clustering ------------------------------------------------------
+cluster_df = function(df, clusters = 3, dimensions = c("rating", "intl_revenue")) {
+  
+  train_matrix = df[,dimensions]
+  
+  kmean_model = kmeans(train_matrix, clusters)
+  
+  output = df %>% mutate(cluster = factor(kmean_model$cluster))
+  
+  return(output)
+  
+}
 
 
 # Produce Graph -----------------------------------------------------------
@@ -236,8 +245,8 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
   y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
                         , "intl_revenue" = "Box Office Revenue")
   
-  ggplot(data = df, aes_string(y = axes[1], x = axes[2])) +
-    geom_point(size = 2.5) +
+  ggplot(data = df, aes_string(y = axes[1], x = axes[2], color = "cluster")) +
+    geom_point(size = 3) +
     scale_y_continuous(limits = c(0,100)) +
     scale_x_comma() +
     labs(x=x_lab, y=y_lab,

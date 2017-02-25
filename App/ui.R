@@ -31,6 +31,7 @@ shinyUI(
         h1("STRATTON"),
         
         # author info
+        
         span(
           style = "font-size: 1.2em",
           span("Created by "),
