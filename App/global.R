@@ -295,7 +295,10 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
   y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
                  , "intl_revenue" = "Box Office Revenue")
 
-  hart = hchart(df, "scatter", hcaes(x = intl_revenue, y = rating, color = cluster)) %>%
+  # Cheeky
+  # Grabbed hcaes_string from the dev version of highcharter
+  # really really handy for me
+  hart = hchart(df, "scatter", hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster')) %>%
     hc_chart(type = "scatter") %>% 
     hc_yAxis(
       title = list(text = y_lab),
@@ -306,8 +309,8 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
     ) %>%    
     hc_title(text = "Test Plot") %>% 
     hc_subtitle(text = "For Demonstration Purposes Only") %>% 
-    hc_tooltip(useHTML = TRUE, headerFormat = "") %>% 
-    hc_size(height = 600)
+    hc_tooltip(useHTML = TRUE, headerFormat = "")
+    #hc_size(height = 600)
   
   
 }
