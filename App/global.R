@@ -242,15 +242,18 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
   require(gcookbook)
   require(RColorBrewer)
   
+  
+  # Translate axis vars to english axis labels
   x_lab = switch(axes[2], "rating" = "Rotten Tomatoes Score"
                  , "intl_revenue" = "Box Office Revenue")
   y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
                  , "intl_revenue" = "Box Office Revenue")
   
+  # Produce graph
   gg = ggplot(data = df, aes_string(y = axes[1], x = axes[2], color = "cluster")) +
     geom_point(size = 3) +
     scale_y_continuous(limits = c(0, 1.1 * max(df[,axes[1]]))) +
-    scale_x_comma(limits = c(0, 1.1 * max(df[,axes[2]]))) +
+    scale_x_comma(limits = c(-100000, 1.1 * max(df[,axes[2]]))) +
     scale_color_brewer(type = 'qual', palette = 'Accent') +
     labs(x=x_lab, y=y_lab,
          title="Test plot",
@@ -260,14 +263,14 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
     theme(axis.line.x = element_line(color="black"),
           axis.line.y = element_line(color="black"))
   
-  # Encircle clusters
+  # Loop and encircle the clusters using GGALT functionality
   ind = 1
   for (clust in unique(df$cluster)) {
     
     gg = gg + geom_encircle(
       data = filter(df, cluster == clust),
       color = brewer.pal(length(unique(df$cluster)), name = "Accent")[ind],
-      s_shape=0.9, expand=0.05
+      s_shape=0.1, expand=0.001
     )
     
     ind = ind + 1
@@ -276,3 +279,36 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
   return(gg)
   
 }
+
+
+
+# Highcharts equivolent of the Cluster function --------------------------------------------------------------
+chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
+  
+  require(highcharter)
+  require(dplyr)
+  require(mapp)
+  
+  # Translate axis vars to english axis labels
+  x_lab = switch(axes[2], "rating" = "Rotten Tomatoes Score"
+                 , "intl_revenue" = "Box Office Revenue")
+  y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
+                 , "intl_revenue" = "Box Office Revenue")
+
+  hart = hchart(df, "scatter", hcaes(x = intl_revenue, y = rating, color = cluster)) %>%
+    hc_chart(type = "scatter") %>% 
+    hc_yAxis(
+      title = list(text = y_lab),
+      labels = list(format = "{value}%"), max = 100, min = 0
+    ) %>%
+    hc_xAxis(
+      title = list(text = x_lab)
+    ) %>%    
+    hc_title(text = "Test Plot") %>% 
+    hc_subtitle(text = "For Demonstration Purposes Only") %>% 
+    hc_tooltip(useHTML = TRUE, headerFormat = "") %>% 
+    hc_size(height = 600)
+  
+  
+}
+

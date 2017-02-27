@@ -13,8 +13,6 @@ shinyUI(
       tags$head(
         includeScript(file.path('www', 'message-handler.js')),
         includeCSS(file.path('www', 'style.css'))
-        # Arvo google font
-        #tags$style(HTML('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arvo">'))
       )
     ),
     
@@ -80,7 +78,7 @@ shinyUI(
           tags$div(id = "body_div",
                    
                    tabsetPanel(
-                     tabPanel("Chart", plotOutput('chart')), 
+                     tabPanel("Chart", plotOutput('chart', height = 500)), 
                      tabPanel("Timeline"), 
                      tabPanel("Raw Data", dataTableOutput("data_set"))
                    )
