@@ -26,6 +26,14 @@ body, label, input, button, select {
 }
 
 
+#x_axis_box {
+
+    -webkit-transform: rotate(270deg);
+	transform: rotate(270deg);
+ 	background-color: yellow;
+}
+
+
 #headerSection {
   margin: -25px 0 20px;
   color: #FAFAFA;

@@ -78,7 +78,18 @@ shinyUI(
           tags$div(id = "body_div",
                    
                    tabsetPanel(
-                     tabPanel("Chart", plotOutput('chart', height = 500)), 
+                     tabPanel("Chart", 
+                              
+                              fluidRow(
+                                
+                                column(2, div(id = "x_axis_box", selectInput("x_axis","",choices = c("Rotten Tomatoes Score", "Thing 2")))),
+                                
+                                column(10, highchartOutput('chart', height = 500))
+                                
+                                
+                              )
+                     ),
+                     
                      tabPanel("Timeline"), 
                      tabPanel("Raw Data", dataTableOutput("data_set"))
                    )

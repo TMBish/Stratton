@@ -38,7 +38,7 @@ shinyServer(function(input, output, session) {
   
   # Output Chart ------------------------------------------------------------
   output$chart = 
-    renderPlot({
+    renderHighchart({
       
       if (revals$do_plot) {
         
@@ -46,7 +46,7 @@ shinyServer(function(input, output, session) {
         
         cl_d = cluster_df(d)
         
-        chart_cluster(cl_d)
+        chart_cluster_h(cl_d)
         
       }
       

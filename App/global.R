@@ -283,11 +283,26 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
 
 
 # Highcharts equivolent of the Cluster function --------------------------------------------------------------
+stratton_thm = hc_theme_merge(
+  hc_theme_monokai(),
+  hc_theme(
+    chart = list(
+      style = list(
+        fontFamily = 'Helvetica'
+      )
+    ),
+    title = list(
+      style = list(
+        color = 'white'
+      )
+    )
+  )
+)
+
 chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
   
   require(highcharter)
   require(dplyr)
-  require(mapp)
   
   # Translate axis vars to english axis labels
   x_lab = switch(axes[2], "rating" = "Rotten Tomatoes Score"
@@ -302,14 +317,18 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
     hc_chart(type = "scatter") %>% 
     hc_yAxis(
       title = list(text = y_lab),
-      labels = list(format = "{value}%"), max = 100, min = 0
+      labels = list(format = "{value}%"), 
+      max = 100, min = 0,
+      linewidth = 1
     ) %>%
     hc_xAxis(
       title = list(text = x_lab)
     ) %>%    
     hc_title(text = "Test Plot") %>% 
     hc_subtitle(text = "For Demonstration Purposes Only") %>% 
-    hc_tooltip(useHTML = TRUE, headerFormat = "")
+    hc_tooltip(useHTML = TRUE, headerFormat = "") %>%
+    hc_add_theme(stratton_thm)
+  
     #hc_size(height = 600)
   
   
