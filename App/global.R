@@ -1,6 +1,7 @@
 library(readr)
 library(dplyr)
 library(hrbrthemes)
+library(highcharter)
 
 options(stringsAsFactors = FALSE)
 
@@ -284,11 +285,13 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
 
 # Highcharts equivolent of the Cluster function --------------------------------------------------------------
 stratton_thm = hc_theme_merge(
-  hc_theme_monokai(),
+  hc_theme_elementary(),
   hc_theme(
     chart = list(
       style = list(
-        fontFamily = 'Helvetica'
+        fontFamily = 'Helvetica',
+        backgroundColor='rgba(255, 255, 255, 0.1)'
+        #divBackgroundImage = "osiris-small.png"
       )
     ),
     title = list(
