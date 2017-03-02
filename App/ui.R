@@ -94,9 +94,11 @@ shinyUI(
                          
                          tabPanel("Chart", 
                                   
-                                  conditionalPanel("output.do_plot",
+                                  conditionalPanel("input.do_plot",
                                                    
                                                    br(),
+                                                   
+                                                   highchartOutput('chart', height = 500),
                                                    
                                                    wellPanel(
                                                      
@@ -127,10 +129,7 @@ shinyUI(
                                                        
                                                      )
                                                      
-                                                   ),
-                                                   
-                                                   highchartOutput('chart', height = 500)
-                                                   
+                                                   )
                                   )
                          ),
                          
