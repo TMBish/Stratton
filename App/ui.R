@@ -77,7 +77,9 @@ shinyUI(
                                 "Search",
                                 icon = icon("refresh"),
                                 style = "info"
-                       )
+                       ),
+                       
+                       verbatimTextOutput("do_plot")
                        
           ),
           
@@ -92,7 +94,7 @@ shinyUI(
                          
                          tabPanel("Chart", 
                                   
-                                  conditionalPanel("input.do_plot",
+                                  conditionalPanel("output.do_plot",
                                                    
                                                    br(),
                                                    
@@ -100,44 +102,35 @@ shinyUI(
                                                      
                                                      fluidRow(
                                                        
-                                                       column(4, numericInput("clusters",
-                                                                              label = NULL,
+                                                       column(3,
+                                                              selectInput("y_axis",
+                                                                          "Y Axis:",
+                                                                          choices = c("Rotten Tomatoes", "Revenue", "Profit"))
+                                                       ),
+                                                       
+                                                       column(3,
+                                                              selectInput("x_axis",
+                                                                          "X Axis:",
+                                                                          choices = c("Revenue", "Profit","Rotten Tomatoes"))
+                                                              
+                                                       ),
+                                                       
+                                                       column(3, numericInput("clusters",
+                                                                              label = "Number of Clusters:",
                                                                               3,
                                                                               min=1,
                                                                               max=10)
                                                        ),
-                                                       column(2, 
+                                                       column(3, 
                                                               
-                                                              bsButton("cluster", "Cluster", icon = icon("calculator"), style = "primary"))
+                                                              bsButton("cluster", "Recalculate", icon = icon("calculator"), style = "primary"))
                                                        
                                                      )
                                                      
                                                    ),
-                                                   br(),
                                                    
-                                                   fluidRow(
-                                                     
-                                                     column(2,
-                                                            
-                                                            div(id="spacer"),
-                                                            
-                                                            selectInput("y_axis",
-                                                                        "Y Axis:",
-                                                                        choices = c("Rotten Tomatoes", "Revenue", "Profit"))
-                                                     ),
-                                                     
-                                                     column(10, highchartOutput('chart', height = 500))
-                                                     
-                                                   ),
+                                                   highchartOutput('chart', height = 500)
                                                    
-                                                   fluidRow(
-                                                     
-                                                     column(2, offset = 6,
-                                                            
-                                                            selectInput("x_axis","X Axis:",choices = c("Revenue", "Profit","Rotten Tomatoes"))
-                                                     )
-                                                     
-                                                   )
                                   )
                          ),
                          

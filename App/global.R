@@ -297,7 +297,8 @@ stratton_thm = hc_theme_merge(
     chart = list(
       style = list(
         fontFamily = 'Helvetica',
-        backgroundColor='rgba(255, 255, 255, 0.1)'
+        backgroundColor = NULL,
+        plotBackgroundColor = NULL
         #divBackgroundImage = "osiris-small.png"
       )
     ),
