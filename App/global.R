@@ -5,6 +5,13 @@ library(highcharter)
 
 options(stringsAsFactors = FALSE)
 
+# Load Timer --------------------------------------------------------------
+load_data = function() {
+  Sys.sleep(3)
+  hide("loading_page")
+  show("main_content")
+}
+
 # Type-ahead Lists ---------------------------------------------------------
 actors_list = read_csv('./data/actors.csv')
 

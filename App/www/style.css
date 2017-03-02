@@ -26,14 +26,20 @@ body, label, input, button, select {
 }
 
 
-#x_axis_box {
+#spacer {
 
-    -webkit-transform: rotate(270deg);
-	transform: rotate(270deg);
- 	background-color: yellow;
- 	margin-top: 200px;
- 	padding-left: 0px;
- 	width: 200px;
+	height: 220px;
+}
+
+.selectize-input {
+
+	font-size: 12px;
+}
+
+
+#cluster {
+	position: absolute;
+  	top: 50%;
 }
 
 

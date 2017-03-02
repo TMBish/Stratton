@@ -4,7 +4,10 @@ library(shiny)
 # Server logic
 shinyServer(function(input, output, session) {
   
+  # Load the screen
+  load_data()
   
+  # Initialise a reactive vals object
   revals = reactiveValues(
     data_set = NULL, # Init data set as null
     do_plot = FALSE # Turn off displays when App is opened
@@ -36,6 +39,14 @@ shinyServer(function(input, output, session) {
                     ))
   
   
+  # Plot Control ------------------------------------------------------------
+  output$do_plot = renderText({
+    
+    return(revals$do_plot)
+    
+  })
+  
+  
   # Output Chart ------------------------------------------------------------
   output$chart = 
     renderHighchart({
@@ -55,6 +66,8 @@ shinyServer(function(input, output, session) {
   
   
 })
+
+
 
 
 
