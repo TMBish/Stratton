@@ -231,9 +231,9 @@ append_box_office = function(films){
 cluster_df = function(df, clusters = 3, dimensions = c("rating", "intl_revenue")) {
   
   train_matrix = df[,dimensions]
-  
+
   kmean_model = kmeans(train_matrix, clusters)
-  
+
   output = df %>% mutate(cluster = factor(kmean_model$cluster))
   
   return(output)
@@ -320,6 +320,8 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
                  , "intl_revenue" = "Box Office Revenue")
   y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
                  , "intl_revenue" = "Box Office Revenue")
+  
+  # Need some
 
   # Cheeky
   # Grabbed hcaes_string from the dev version of highcharter

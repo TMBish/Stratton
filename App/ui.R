@@ -22,7 +22,7 @@ shinyUI(
     
     # Application Body --------------------------------------------------------
     
-    # App Header
+    # App Header --------------------------------------------------------
     div(id = "headerSection",
         
         # tags$img(
@@ -45,6 +45,7 @@ shinyUI(
         )
     ),
     
+    # Loading Div -------------------------------------------------------------
     div(
       style="background-color : transparent",
       id = "loading_page",
@@ -145,3 +146,5 @@ shinyUI(
     )
   )
 )
+
+
