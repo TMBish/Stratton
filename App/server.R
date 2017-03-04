@@ -10,7 +10,7 @@ shinyServer(function(input, output, session) {
   # Initialise a reactive vals object
   revals = reactiveValues(
     data_set = NULL, # Init data set as null
-    do_plot = FALSE # Turn off displays when App is opened
+    do_plot = 0 # Turn off displays when App is opened
   )
   
   
@@ -27,7 +27,7 @@ shinyServer(function(input, output, session) {
     revals$data_set = sel_films_comp
     
     #Update plot options
-    revals$do_plot = TRUE
+    revals$do_plot = 1
     
   })
   
@@ -41,10 +41,10 @@ shinyServer(function(input, output, session) {
   
   # Plot Control ------------------------------------------------------------
   output$do_plot = renderText({
-    
     return(revals$do_plot)
-    
   })
+  outputOptions(output, 'do_plot', suspendWhenHidden=FALSE)
+  
   
   
   # Output Chart ------------------------------------------------------------

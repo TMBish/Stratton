@@ -77,9 +77,9 @@ shinyUI(
                                 "Search",
                                 icon = icon("refresh"),
                                 style = "info"
-                       ),
+                       )
                        
-                       verbatimTextOutput("do_plot")
+                       #verbatimTextOutput("do_plot")
                        
           ),
           
@@ -94,11 +94,10 @@ shinyUI(
                          
                          tabPanel("Chart", 
                                   
-                                  conditionalPanel("input.do_plot",
+                                  conditionalPanel("output.do_plot > 0",
                                                    
                                                    br(),
-                                                   
-                                                   highchartOutput('chart', height = 500),
+                                                   highchartOutput('chart'),
                                                    
                                                    wellPanel(
                                                      
