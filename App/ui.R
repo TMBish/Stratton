@@ -58,93 +58,93 @@ shinyUI(
         
         # Sidebar -----------------------------------------------------------------
         # Sidebar with a slider input for number of bins 
-        sidebarLayout(
-          sidebarPanel(id="sidebar",
-                       
-                       # Actor / Director Input Box
-                       h3("Enter the name of an Actor or Director:"),
-                       
-                       textInput.typeahead(
-                         id="search_input",
-                         placeholder="e.g. Joseph Gordon-Levitt",
-                         local= typeahead_data,
-                         valueKey = "Name",
-                         tokens=seq(1,nrow(typeahead_data)),
-                         template = HTML("<p class='repo-language'>{{Role}}</p> <p class='repo-name'>{{Name}}</p>")
-                       ), 
-                       br(),
-                       
-                       bsButton("search", 
-                                "Search",
-                                icon = icon("refresh"),
-                                style = "info"
-                       )
-                       
-                       #verbatimTextOutput("do_plot")
-                       
+        wellPanel(
+          
+          # Actor / Director Input Box
+          h4("Enter the name of an Actor or Director:"),
+          
+          textInput.typeahead(
+            id="search_input",
+            placeholder="e.g. Joseph Gordon-Levitt",
+            local= typeahead_data,
+            valueKey = "Name",
+            tokens=seq(1,nrow(typeahead_data)),
+            template = HTML("<p class='repo-language'>{{Role}}</p> <p class='repo-name'>{{Name}}</p>")
           ),
           
-          # Body --------------------------------------------------------------------
-          mainPanel(
-            
-            wellPanel(
-              
-              tags$div(id = "body_div",
-                       
-                       tabsetPanel(
-                         
-                         tabPanel("Chart", 
-                                  
-                                  conditionalPanel("output.do_plot > 0",
-                                                   
-                                                   br(),
-                                                   highchartOutput('chart'),
-                                                   
-                                                   wellPanel(
-                                                     
-                                                     fluidRow(
-                                                       
-                                                       column(3,
-                                                              selectInput("y_axis",
-                                                                          "Y Axis:",
-                                                                          choices = c("Rotten Tomatoes", "Revenue", "Profit"))
-                                                       ),
-                                                       
-                                                       column(3,
-                                                              selectInput("x_axis",
-                                                                          "X Axis:",
-                                                                          choices = c("Revenue", "Profit","Rotten Tomatoes"))
-                                                              
-                                                       ),
-                                                       
-                                                       column(3, numericInput("clusters",
-                                                                              label = "Number of Clusters:",
-                                                                              3,
-                                                                              min=1,
-                                                                              max=10)
-                                                       ),
-                                                       column(3, 
-                                                              
-                                                              bsButton("cluster", "Calculate", icon = icon("calculator"), style = "primary"))
-                                                       
-                                                     )
-                                                     
-                                                   )
-                                  )
-                         ),
-                         
-                         tabPanel("Timeline"),
-                         
-                         tabPanel("Raw Data", wellPanel(dataTableOutput("data_set")))
-                       )
-                       
-              )          
-            )
+          br(),
+          br(),
+          
+          bsButton("search", 
+                   "Search",
+                   icon = icon("refresh"),
+                   style = "info"
           )
+          
+          #verbatimTextOutput("do_plot")
+          
+        ),
+        
+        # Body --------------------------------------------------------------------
+        
+        wellPanel(
+          
+          tags$div(id = "body_div",
+                   
+                   tabsetPanel(
+                     
+                     tabPanel("Chart", 
+                              
+                              conditionalPanel("output.do_plot > 0",
+                                               
+                                               br(),
+                                               highchartOutput('chart'),
+                                               
+                                               wellPanel(
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   column(3,
+                                                          selectInput("y_axis",
+                                                                      "Y Axis:",
+                                                                      choices = c("Rotten Tomatoes", "Revenue", "Profit"))
+                                                   ),
+                                                   
+                                                   column(3,
+                                                          selectInput("x_axis",
+                                                                      "X Axis:",
+                                                                      choices = c("Revenue", "Profit","Rotten Tomatoes"))
+                                                          
+                                                   ),
+                                                   
+                                                   column(3, numericInput("clusters",
+                                                                          label = "Number of Clusters:",
+                                                                          3,
+                                                                          min=1,
+                                                                          max=10)
+                                                   ),
+                                                   column(3, 
+                                                          div(id = "cluster-button",
+                                                              bsButton("cluster", "Calculate", icon = icon("calculator"), style = "primary"))
+                                                   )
+                                                 )
+                                                 
+                                               )
+                              )
+                     ),
+                     
+                     tabPanel("Timeline"),
+                     
+                     tabPanel("Raw Data", wellPanel(dataTableOutput("data_set")))
+                   )
+                   
+          )          
         )
       )
     )
   )
 )
+
+
 
 

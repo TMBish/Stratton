@@ -339,13 +339,19 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
   y_form = tool_format(axes[1],1)
   x_form = tool_format(axes[2],2)
   
-  
   # Cheeky
   # Grabbed hcaes_string from the dev version of highcharter
   # really really handy for me
   output = 
-    hchart(df, "scatter", hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster')) %>%
-    hc_chart(type = "scatter") %>% 
+    hchart(df,
+           "scatter",
+           hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster')
+           ) %>%
+    # hc_add_series(data = hulls %>% filter(cluster==2), 
+    #               hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster'),
+    #               type = "polygon"
+    #               ) %>%
+    hc_plotOptions(series = list(fillOpacity = 0.1)) %>%
     hc_yAxis(
       title = list(text = y_lab),
       labels = list(format = "{value}%"), 
@@ -371,6 +377,19 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
                 )
                )
     )
+  
+  
+    # Finding Convex Hull Around Clusters
+    # hulls = df %>% sample_n(0)
+    # for (c in unique(df$cluster)) {
+    #   
+    #   df_c = df %>% filter(cluster == c)
+    #   
+    #   hull = df[chull(df[,axes[1]],df[,axes[2]]),]
+    #   
+    #   hulls = hulls %>% union_all(hull)
+    #   
+    # }
                
                
   

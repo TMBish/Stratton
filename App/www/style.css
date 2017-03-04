@@ -26,9 +26,10 @@ body, label, input, button, select {
 }
 
 
-#spacer {
+#cluster-button {
 
-	height: 220px;
+	display:flex;
+	align-items:center;    
 }
 
 .selectize-input {
@@ -59,4 +60,20 @@ body, label, input, button, select {
 h1 {
   font-family: "Arvo", serif;
   font-weight: bold;
+}
+
+h4 {
+  font-family: "Arvo", serif;
+}
+
+li {
+  font-family: "Arvo", serif;
+}
+
+p {
+  font-family: "Arvo", serif;
+}
+
+label {
+  font-family: "Arvo", serif;
 }
