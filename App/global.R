@@ -231,9 +231,10 @@ append_box_office = function(films){
 cluster_df = function(df, clusters = 3, dimensions = c("rating", "intl_revenue")) {
   
   train_matrix = df[,dimensions]
-
+  
   kmean_model = kmeans(train_matrix, clusters)
-
+  
+  
   output = df %>% mutate(cluster = factor(kmean_model$cluster))
   
   return(output)
@@ -321,12 +322,29 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
   y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
                  , "intl_revenue" = "Box Office Revenue")
   
-  # Need some
-
+  # Build the javascript tooltip formats
+  tool_format = function(axis, num) {
+    
+    dirc = switch(num, "1" = "y", "2" = "x")
+    
+    if (axis == 'rating'){
+      format = paste0("this.",dirc," + '%'")
+    } else if (axis == 'intl_revenue') {
+      format = paste0("'$' + (this.", dirc, "/1000000).toFixed(2) + 'm'")
+    }
+    
+  }
+  
+  # Use to create the formats
+  y_form = tool_format(axes[1],1)
+  x_form = tool_format(axes[2],2)
+  
+  
   # Cheeky
   # Grabbed hcaes_string from the dev version of highcharter
   # really really handy for me
-  hart = hchart(df, "scatter", hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster')) %>%
+  output = 
+    hchart(df, "scatter", hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster')) %>%
     hc_chart(type = "scatter") %>% 
     hc_yAxis(
       title = list(text = y_lab),
@@ -339,8 +357,23 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
     ) %>%    
     hc_title(text = "Test Plot") %>% 
     hc_subtitle(text = "For Demonstration Purposes Only") %>% 
-    hc_tooltip(useHTML = TRUE, headerFormat = "") %>%
-    hc_add_theme(stratton_thm)
+    hc_tooltip(useHTML = TRUE, headerFormat = "",
+               # Lol below looks fucked up
+               # This hurt my brain so much
+               formatter = JS(
+                 paste0(
+                   "function(){return (",
+                   "'<strong>' + this.point.title + '</strong> <br>' + ",
+                   "'<strong> Role: </strong>' + this.point.role + '<br>' + ",
+                   "'<strong>", y_lab, " : </strong> ' + ", y_form, " + '<br>' + ",
+                   "'<strong>", x_lab, " : </strong> ' + ", x_form,
+                   ")}" 
+                )
+               )
+    )
+               
+               
+  
   
     #hc_size(height = 600)
   

@@ -125,7 +125,7 @@ shinyUI(
                                                        ),
                                                        column(3, 
                                                               
-                                                              bsButton("cluster", "Recalculate", icon = icon("calculator"), style = "primary"))
+                                                              bsButton("cluster", "Calculate", icon = icon("calculator"), style = "primary"))
                                                        
                                                      )
                                                      
@@ -135,7 +135,7 @@ shinyUI(
                          
                          tabPanel("Timeline"),
                          
-                         tabPanel("Raw Data", dataTableOutput("data_set"))
+                         tabPanel("Raw Data", wellPanel(dataTableOutput("data_set")))
                        )
                        
               )          
