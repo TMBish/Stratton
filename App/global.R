@@ -12,6 +12,13 @@ load_data = function() {
   show("main_content")
 }
 
+# Dimension Map --------------------------------------------------------------
+dim_map = function(dim) {
+  out = switch(dim,
+               "Rotten Tomatoes Score" = "rating",
+               "Revenue" = "intl_revenue")
+}
+
 # Type-ahead Lists ---------------------------------------------------------
 actors_list = read_csv('./data/actors.csv')
 
@@ -314,32 +321,56 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE
   
   require(highcharter)
   require(dplyr)
+  require(stringr)
+
+  #++++++++++++++++++++++++++++++++++
+  # Dynamically build chart attributes
+  #++++++++++++++++++++++++++++++++++
   
-  # Translate axis vars to english axis labels
-  x_lab = switch(axes[2], "rating" = "Rotten Tomatoes Score"
-                 , "intl_revenue" = "Box Office Revenue")
-  y_lab = switch(axes[1], "rating" = "Rotten Tomatoes Score"
-                 , "intl_revenue" = "Box Office Revenue")
-  
-  # Build the javascript tooltip formats
+  # Need a helper to get it done: Build the javascript tooltip formats
   tool_format = function(axis, num) {
     
     dirc = switch(num, "1" = "y", "2" = "x")
-    
     if (axis == 'rating'){
       format = paste0("this.",dirc," + '%'")
     } else if (axis == 'intl_revenue') {
-      format = paste0("'$' + (this.", dirc, "/1000000).toFixed(2) + 'm'")
+      format = paste0("'$' + (this.", dirc, "/1000000).toFixed(0) + 'm'")
     }
     
   }
   
-  # Use to create the formats
-  y_form = tool_format(axes[1],1)
-  x_form = tool_format(axes[2],2)
+  c_atr = list()
+  for (i in c("x","y")) {
+    
+    axis = ifelse(i=="x", 2, 1)
+    
+    # Axis labels
+    c_atr[[i]]$label_text = switch(axes[axis],
+                              "rating" = "Rotten Tomatoes Score",
+                              "intl_revenue" = "Box Office Revenue")
+    
+    # Formmat for the tooltip
+    c_atr[[i]]$tooltip_form =  tool_format(axes[axis],axis)
+    
+    # Format for the axes
+    c_atr[[i]]$label_form = str_replace(c_atr[[i]]$tooltip_form, "\\.[xy]", ".value")
+    
+    # Axis limits
+    c_atr[[i]]$min = switch(axes[axis],
+                            "rating" = 0,
+                            "intl_revenue" = 0)
+    c_atr[[i]]$max = switch(axes[axis],
+                            "rating" = 100,
+                            "intl_revenue" = 1.05 * max(df[,axes[axis]]))
+    
+  }
   
-  # Cheeky
-  # Grabbed hcaes_string from the dev version of highcharter
+
+  #++++++++++++++++++
+  # Build base chart
+  #++++++++++++++++++
+  
+  # Cheeky: Grabbed hcaes_string from the dev version of highcharter
   # really really handy for me
   if (clstr) {
     
@@ -351,6 +382,9 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE
     
   }
   
+  #+++++++++++++++
+  # Add on extras
+  #+++++++++++++++
   
   output = 
     # hc_add_series(data = hulls %>% filter(cluster==2), 
@@ -362,12 +396,16 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE
       divBackgroundImage = "osiris-small.png") %>%
     hc_yAxis(
       title = list(text = y_lab),
-      labels = list(format = "{value}%"), 
-      max = 100, min = 0,
+      labels = list(formatter = JS(paste0("function(){return(",c_atr$y$label_form,")}"))), 
+      min = c_atr$y$min,
+      max = c_atr$y$max,
       linewidth = 1
     ) %>%
     hc_xAxis(
-      title = list(text = x_lab)
+      title = list(text = x_lab),
+      labels = list(formatter = JS(paste0("function(){return(",c_atr$x$label_form,")}"))),
+      min = c_atr$x$min,
+      max = c_atr$x$max
     ) %>%    
     hc_title(text = "Test Plot") %>% 
     hc_subtitle(text = "For Demonstration Purposes Only") %>% 
@@ -379,8 +417,8 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE
                    "function(){return (",
                    "'<strong>' + this.point.title + '</strong> <br>' + ",
                    "'<strong> Role: </strong>' + this.point.role + '<br>' + ",
-                   "'<strong>", y_lab, " : </strong> ' + ", y_form, " + '<br>' + ",
-                   "'<strong>", x_lab, " : </strong> ' + ", x_form,
+                   "'<strong>", c_atr$y$label_text, " : </strong> ' + ", c_atr$y$tooltip_form, " + '<br>' + ",
+                   "'<strong>", c_atr$x$label_text, " : </strong> ' + ", c_atr$x$tooltip_form,
                    ")}" 
                 )
                )

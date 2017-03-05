@@ -66,11 +66,17 @@ shinyServer(function(input, output, session) {
   
   # Plot Structure Change ---------------------------------------------------
   observe({
-    
-    d = filter(revals$data_set, !is.na(intl_revenue))
-    
-    revals$chart = chart_cluster_h(d, axes = c(input$y_axis, input$x_axis))
-    
+
+    if (revals$do_plot > 0) {
+     
+      d = filter(revals$data_set, 
+                 !is.na(intl_revenue),
+                 role %in% input$role_type)
+      
+      revals$chart = chart_cluster_h(d, axes = c(dim_map(input$y_axis), dim_map(input$x_axis)))
+      
+    }
+
   })
   
   

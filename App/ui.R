@@ -107,7 +107,7 @@ shinyUI(
                                                    column(2,
                                                           selectInput("y_axis",
                                                                       "Y Axis:",
-                                                                      choices = c("Rotten Tomatoes", "Revenue", "Profit"))
+                                                                      choices = c("Rotten Tomatoes Score", "Revenue", "Profit"))
                                                    ),
                                                    
                                                    column(2,
