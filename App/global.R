@@ -242,7 +242,7 @@ cluster_df = function(df, clusters = 3, dimensions = c("rating", "intl_revenue")
 }
 
 
-# Produce Graph -----------------------------------------------------------
+# Produce Ggplot Graph -----------------------------------------------------------
 chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
   
   require(ggplot2)
@@ -291,7 +291,7 @@ chart_cluster = function(df, axes = c("rating", "intl_revenue")) {
 
 
 
-# Highcharts equivolent of the Cluster function --------------------------------------------------------------
+# Produce Highcharts Graph --------------------------------------------------------------
 stratton_thm = hc_theme_merge(
   hc_theme_elementary(),
   hc_theme(
@@ -300,7 +300,6 @@ stratton_thm = hc_theme_merge(
         fontFamily = 'Helvetica',
         backgroundColor = NULL,
         plotBackgroundColor = NULL
-        #divBackgroundImage = "osiris-small.png"
       )
     ),
     title = list(
@@ -311,7 +310,7 @@ stratton_thm = hc_theme_merge(
   )
 )
 
-chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
+chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE) {
   
   require(highcharter)
   require(dplyr)
@@ -342,16 +341,25 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue")) {
   # Cheeky
   # Grabbed hcaes_string from the dev version of highcharter
   # really really handy for me
+  if (clstr) {
+    
+    base = hchart(df, "scatter", hcaes_string(x = axes[2], y = axes[1], color = 'cluster'))
+    
+  } else {
+    
+    base = hchart(df, "scatter", colour = "#F2B231",hcaes_string(x = axes[2], y = axes[1]))
+    
+  }
+  
+  
   output = 
-    hchart(df,
-           "scatter",
-           hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster')
-           ) %>%
     # hc_add_series(data = hulls %>% filter(cluster==2), 
     #               hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster'),
     #               type = "polygon"
     #               ) %>%
-    hc_plotOptions(series = list(fillOpacity = 0.1)) %>%
+    base %>%
+    hc_plotOptions(
+      divBackgroundImage = "osiris-small.png") %>%
     hc_yAxis(
       title = list(text = y_lab),
       labels = list(format = "{value}%"), 

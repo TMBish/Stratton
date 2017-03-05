@@ -39,8 +39,7 @@ body, label, input, button, select {
 
 
 #cluster {
-	position: absolute;
-  	top: 50%;
+	margin-top: 25px
 }
 
 
@@ -77,3 +76,5 @@ p {
 label {
   font-family: "Arvo", serif;
 }
+
+

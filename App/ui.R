@@ -93,43 +93,54 @@ shinyUI(
                    
                    tabsetPanel(
                      
-                     tabPanel("Chart", 
+                     tabPanel("Scatter", 
                               
                               conditionalPanel("output.do_plot > 0",
                                                
                                                br(),
-                                               highchartOutput('chart'),
+                                               wellPanel(highchartOutput('chart')),
                                                
                                                wellPanel(
                                                  
                                                  fluidRow(
                                                    
-                                                   column(3,
+                                                   column(2,
                                                           selectInput("y_axis",
                                                                       "Y Axis:",
                                                                       choices = c("Rotten Tomatoes", "Revenue", "Profit"))
                                                    ),
                                                    
-                                                   column(3,
+                                                   column(2,
                                                           selectInput("x_axis",
                                                                       "X Axis:",
                                                                       choices = c("Revenue", "Profit","Rotten Tomatoes"))
                                                           
                                                    ),
                                                    
-                                                   column(3, numericInput("clusters",
-                                                                          label = "Number of Clusters:",
+                                                   column(3,
+                                                          
+                                                          checkboxGroupInput("role_type", label = "Role:", inline = TRUE,
+                                                                             choices = c("Actor", "Director", "Actor/Director"),
+                                                                             selected = c("Actor", "Director", "Actor/Director"))
+                                                          
+                                                   )
+                                                 ),
+                                                 
+                                                 fluidRow(
+                                                   
+                                                   column(2, numericInput("clusters",
+                                                                          label = "Cluster films into groups:",
                                                                           3,
                                                                           min=1,
                                                                           max=10)
                                                    ),
-                                                   column(3, 
+                                                   column(2, 
                                                           div(id = "cluster-button",
-                                                              bsButton("cluster", "Calculate", icon = icon("calculator"), style = "primary"))
+                                                              bsButton("cluster", "Cluster", icon = icon("calculator"), style = "primary"))
                                                    )
                                                  )
-                                                 
                                                )
+                                               
                               )
                      ),
                      
@@ -144,6 +155,7 @@ shinyUI(
     )
   )
 )
+
 
 
 
