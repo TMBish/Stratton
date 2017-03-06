@@ -78,7 +78,7 @@ shinyUI(
           bsButton("search", 
                    "Search",
                    icon = icon("refresh"),
-                   style = "info"
+                   style = "primary"
           )
           
           #verbatimTextOutput("do_plot")
@@ -95,52 +95,65 @@ shinyUI(
                      
                      tabPanel("Scatter", 
                               
-                              conditionalPanel("output.do_plot > 0",
-                                               
-                                               br(),
-                                               wellPanel(highchartOutput('chart')),
-                                               
-                                               wellPanel(
-                                                 
-                                                 fluidRow(
+                              hidden(
+                                div(id = "loading-container",
+                                    
+                                    wellPanel(
+                                    tags$img(src = "box.gif", id = "loading-spinner"),
+                                    h4("loading...")
+                                    )
+                                )
+                              ),
+                              
+                              div(id= "chart_content",
+                                  
+                                  conditionalPanel("output.do_plot > 0",
                                                    
-                                                   column(2,
-                                                          selectInput("y_axis",
-                                                                      "Y Axis:",
-                                                                      choices = c("Rotten Tomatoes Score", "Revenue", "Profit"))
-                                                   ),
+                                                   br(),
+                                                   wellPanel(highchartOutput('chart')),
                                                    
-                                                   column(2,
-                                                          selectInput("x_axis",
-                                                                      "X Axis:",
-                                                                      choices = c("Revenue", "Profit","Rotten Tomatoes"))
-                                                          
-                                                   ),
-                                                   
-                                                   column(3,
-                                                          
-                                                          checkboxGroupInput("role_type", label = "Role:", inline = TRUE,
-                                                                             choices = c("Actor", "Director", "Actor/Director"),
-                                                                             selected = c("Actor", "Director", "Actor/Director"))
-                                                          
+                                                   wellPanel(
+                                                     
+                                                     fluidRow(
+                                                       
+                                                       column(2,
+                                                              selectInput("y_axis",
+                                                                          "Y Axis:",
+                                                                          choices = c("Rotten Tomatoes Score", "Revenue", "Profit"))
+                                                       ),
+                                                       
+                                                       column(2,
+                                                              selectInput("x_axis",
+                                                                          "X Axis:",
+                                                                          choices = c("Revenue", "Profit","Rotten Tomatoes Score"))
+                                                              
+                                                       ),
+                                                       
+                                                       column(3,
+                                                              
+                                                              checkboxGroupInput("role_type", label = "Role:", inline = TRUE,
+                                                                                 choices = c("Actor", "Director", "Actor/Director"),
+                                                                                 selected = c("Actor", "Director", "Actor/Director"))
+                                                              
+                                                       )
+                                                     ),
+                                                     
+                                                     fluidRow(
+                                                       
+                                                       column(2, numericInput("clusters",
+                                                                              label = "Cluster films into groups:",
+                                                                              3,
+                                                                              min=1,
+                                                                              max=10)
+                                                       ),
+                                                       column(2, 
+                                                              div(id = "cluster-button",
+                                                                  bsButton("cluster", "Cluster", icon = icon("calculator"), style = "primary"))
+                                                       )
+                                                     )
                                                    )
-                                                 ),
-                                                 
-                                                 fluidRow(
                                                    
-                                                   column(2, numericInput("clusters",
-                                                                          label = "Cluster films into groups:",
-                                                                          3,
-                                                                          min=1,
-                                                                          max=10)
-                                                   ),
-                                                   column(2, 
-                                                          div(id = "cluster-button",
-                                                              bsButton("cluster", "Cluster", icon = icon("calculator"), style = "primary"))
-                                                   )
-                                                 )
-                                               )
-                                               
+                                  )
                               )
                      ),
                      

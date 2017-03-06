@@ -18,6 +18,10 @@ shinyServer(function(input, output, session) {
   # Update data set on user search
   observeEvent(input$search, {
     
+    #Turn off plot
+    hide("chart_content")
+    show("loading-container")
+
     # Get rotten tomatoes data for this person
     sel_films = get_tomatoes(input$search_input)
     
@@ -30,11 +34,13 @@ shinyServer(function(input, output, session) {
     # Create plot
     d = filter(revals$data_set, !is.na(intl_revenue)) %>% cluster_df()
     
-    revals$chart = chart_cluster_h(d)
+    revals$chart = chart_cluster_h(d, input$search_input)
     
     #Update plot options
     revals$do_plot = 1
-    
+    show("chart_content")
+    hide("loading-container")
+
   })
   
   # Output dataset ----------------------------------------------------------
@@ -59,7 +65,7 @@ shinyServer(function(input, output, session) {
     d = filter(revals$data_set, !is.na(intl_revenue)) %>% cluster_df(clusters = input$clusters)
 
     # Update the reactive vals object
-    revals$chart = chart_cluster_h(d, clstr = TRUE)
+    revals$chart = chart_cluster_h(d, input$search_input,axes = c(dim_map(input$y_axis), dim_map(input$x_axis)), clstr = TRUE)
     
   })
   
@@ -73,7 +79,7 @@ shinyServer(function(input, output, session) {
                  !is.na(intl_revenue),
                  role %in% input$role_type)
       
-      revals$chart = chart_cluster_h(d, axes = c(dim_map(input$y_axis), dim_map(input$x_axis)))
+      revals$chart = chart_cluster_h(d, input$search_input,axes = c(dim_map(input$y_axis), dim_map(input$x_axis)))
       
     }
 

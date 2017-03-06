@@ -239,8 +239,9 @@ cluster_df = function(df, clusters = 3, dimensions = c("rating", "intl_revenue")
   
   train_matrix = df[,dimensions]
   
-  kmean_model = kmeans(train_matrix, clusters)
+  train_matrix = data.frame(lapply(train_matrix, scale))
   
+  kmean_model = kmeans(train_matrix, clusters)
   
   output = df %>% mutate(cluster = factor(kmean_model$cluster))
   
@@ -317,7 +318,7 @@ stratton_thm = hc_theme_merge(
   )
 )
 
-chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE) {
+chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr = FALSE) {
   
   require(highcharter)
   require(dplyr)
@@ -378,7 +379,7 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE
     
   } else {
     
-    base = hchart(df, "scatter", colour = "#F2B231",hcaes_string(x = axes[2], y = axes[1]))
+    base = hchart(df, "scatter", color = "#286090",hcaes_string(x = axes[2], y = axes[1]))
     
   }
   
@@ -393,7 +394,9 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE
     #               ) %>%
     base %>%
     hc_plotOptions(
-      divBackgroundImage = "osiris-small.png") %>%
+      divBackgroundImage = "osiris-small.png",
+      scatter = list(marker = list(radius = 5))
+      ) %>%
     hc_yAxis(
       title = list(text = y_lab),
       labels = list(formatter = JS(paste0("function(){return(",c_atr$y$label_form,")}"))), 
@@ -407,8 +410,12 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE
       min = c_atr$x$min,
       max = c_atr$x$max
     ) %>%    
-    hc_title(text = "Test Plot") %>% 
-    hc_subtitle(text = "For Demonstration Purposes Only") %>% 
+    hc_title(text = actor,
+             style = list(fontWeight = "bold"),
+             align = "left") %>% 
+    hc_subtitle(align = "left",
+                style = list(fontStyle = "italic"),
+                text = paste0("A comparison of ", c_atr$y$label_text, " and ", c_atr$x$label_text)) %>% 
     hc_tooltip(useHTML = TRUE, headerFormat = "",
                # Lol below looks fucked up
                # This hurt my brain so much
@@ -417,12 +424,13 @@ chart_cluster_h = function(df, axes = c("rating", "intl_revenue"), clstr = FALSE
                    "function(){return (",
                    "'<strong>' + this.point.title + '</strong> <br>' + ",
                    "'<strong> Role: </strong>' + this.point.role + '<br>' + ",
-                   "'<strong>", c_atr$y$label_text, " : </strong> ' + ", c_atr$y$tooltip_form, " + '<br>' + ",
-                   "'<strong>", c_atr$x$label_text, " : </strong> ' + ", c_atr$x$tooltip_form,
+                   "'<strong>", c_atr$y$label_text, ": </strong> ' + ", c_atr$y$tooltip_form, " + '<br>' + ",
+                   "'<strong>", c_atr$x$label_text, ": </strong> ' + ", c_atr$x$tooltip_form,
                    ")}" 
                 )
                )
-    )
+    ) %>%
+    hc_exporting(enabled =TRUE)
   
   
     # Finding Convex Hull Around Clusters
