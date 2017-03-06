@@ -58,31 +58,35 @@ shinyUI(
         
         # Sidebar -----------------------------------------------------------------
         # Sidebar with a slider input for number of bins 
-        wellPanel(
-          
-          # Actor / Director Input Box
-          h4("Enter the name of an Actor or Director:"),
-          
-          textInput.typeahead(
-            id="search_input",
-            placeholder="e.g. Joseph Gordon-Levitt",
-            local= typeahead_data,
-            valueKey = "Name",
-            tokens=seq(1,nrow(typeahead_data)),
-            template = HTML("<p class='repo-language'>{{Role}}</p> <p class='repo-name'>{{Name}}</p>")
-          ),
-          
-          br(),
-          br(),
-          
-          bsButton("search", 
-                   "Search",
-                   icon = icon("refresh"),
-                   style = "primary"
+        fluidRow(
+          column(4,
+                 wellPanel(
+                   
+                   # Actor / Director Input Box
+                   h3("Enter the name of an Actor or Director:"),
+                   
+                   textInput.typeahead(
+                     id="search_input",
+                     placeholder="e.g. Danny Mcbride",
+                     local= typeahead_data,
+                     valueKey = "Name",
+                     tokens=seq(1,nrow(typeahead_data)),
+                     template = HTML("<p class='repo-language'>{{Role}}</p> <p class='repo-name'>{{Name}}</p>")
+                   ),
+                   
+                   br(),
+                   br(),
+                   
+                   bsButton("search", 
+                            "Search",
+                            icon = icon("refresh"),
+                            style = "primary"
+                   )
+                   
+                   #verbatimTextOutput("do_plot")
+                   
+                 )
           )
-          
-          #verbatimTextOutput("do_plot")
-          
         ),
         
         # Body --------------------------------------------------------------------
@@ -99,8 +103,8 @@ shinyUI(
                                 div(id = "loading-container",
                                     
                                     wellPanel(
-                                    tags$img(src = "box.gif", id = "loading-spinner"),
-                                    h4("loading...")
+                                      tags$img(src = "box.gif", id = "loading-spinner"),
+                                      h4("loading...")
                                     )
                                 )
                               ),
@@ -110,7 +114,7 @@ shinyUI(
                                   conditionalPanel("output.do_plot > 0",
                                                    
                                                    br(),
-                                                   wellPanel(highchartOutput('chart')),
+                                                   wellPanel(highchartOutput('chart', height=600)),
                                                    
                                                    wellPanel(
                                                      
@@ -119,13 +123,13 @@ shinyUI(
                                                        column(2,
                                                               selectInput("y_axis",
                                                                           "Y Axis:",
-                                                                          choices = c("Rotten Tomatoes Score", "Revenue", "Profit"))
+                                                                          choices = c("Rotten Tomatoes Score", "Revenue", "Profit", "Year"))
                                                        ),
                                                        
                                                        column(2,
                                                               selectInput("x_axis",
                                                                           "X Axis:",
-                                                                          choices = c("Revenue", "Profit","Rotten Tomatoes Score"))
+                                                                          choices = c("Revenue", "Profit","Rotten Tomatoes Score", "Year"))
                                                               
                                                        ),
                                                        

@@ -7,7 +7,7 @@ options(stringsAsFactors = FALSE)
 
 # Load Timer --------------------------------------------------------------
 load_data = function() {
-  Sys.sleep(3)
+  Sys.sleep(2)
   hide("loading_page")
   show("main_content")
 }
@@ -16,7 +16,8 @@ load_data = function() {
 dim_map = function(dim) {
   out = switch(dim,
                "Rotten Tomatoes Score" = "rating",
-               "Revenue" = "intl_revenue")
+               "Revenue" = "intl_revenue",
+               "Year" = "year")
 }
 
 # Type-ahead Lists ---------------------------------------------------------
@@ -305,7 +306,7 @@ stratton_thm = hc_theme_merge(
   hc_theme(
     chart = list(
       style = list(
-        fontFamily = 'Helvetica',
+        fontFamily = 'Arial',
         backgroundColor = NULL,
         plotBackgroundColor = NULL
       )
@@ -336,6 +337,8 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
       format = paste0("this.",dirc," + '%'")
     } else if (axis == 'intl_revenue') {
       format = paste0("'$' + (this.", dirc, "/1000000).toFixed(0) + 'm'")
+    } else if (axis == 'year') {
+      format = paste0("this.", dirc)
     }
     
   }
@@ -348,7 +351,8 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     # Axis labels
     c_atr[[i]]$label_text = switch(axes[axis],
                               "rating" = "Rotten Tomatoes Score",
-                              "intl_revenue" = "Box Office Revenue")
+                              "intl_revenue" = "Box Office Revenue",
+                              "year" = "Year")
     
     # Formmat for the tooltip
     c_atr[[i]]$tooltip_form =  tool_format(axes[axis],axis)
@@ -359,10 +363,12 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     # Axis limits
     c_atr[[i]]$min = switch(axes[axis],
                             "rating" = 0,
-                            "intl_revenue" = 0)
+                            "intl_revenue" = 0,
+                            "year" = min(df[,axes[axis]]))
     c_atr[[i]]$max = switch(axes[axis],
                             "rating" = 100,
-                            "intl_revenue" = 1.05 * max(df[,axes[axis]]))
+                            "intl_revenue" = 1.05 * max(df[,axes[axis]]),
+                            "year" = max(df[,axes[axis]]))
     
   }
   
@@ -395,7 +401,7 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     base %>%
     hc_plotOptions(
       divBackgroundImage = "osiris-small.png",
-      scatter = list(marker = list(radius = 5))
+      scatter = list(marker = list(radius = 6))
       ) %>%
     hc_yAxis(
       title = list(text = y_lab),
@@ -432,7 +438,6 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     ) %>%
     hc_exporting(enabled =TRUE)
   
-  
     # Finding Convex Hull Around Clusters
     # hulls = df %>% sample_n(0)
     # for (c in unique(df$cluster)) {
@@ -445,10 +450,6 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     #   
     # }
                
-               
-  
-  
-    #hc_size(height = 600)
   
   
 }

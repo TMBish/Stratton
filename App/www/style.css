@@ -1,7 +1,7 @@
 @import url('//fonts.googleapis.com/css?family=Arvo');
 
 body {
-  background: url("bricks.png") repeat;
+  background: url("back.png") repeat;
 }
 
 body, label, input, button, select { 
@@ -18,7 +18,7 @@ body, label, input, button, select {
 	width: 150px;
 }
 
-#loading-container{
+#loading-container {
 	text-align:center;
 
 }
@@ -28,12 +28,6 @@ body, label, input, button, select {
 	display:flex;
 	align-items:center;    
 }
-
-.selectize-input {
-
-	font-size: 12px;
-}
-
 
 #cluster {
 	margin-top: 25px
@@ -59,8 +53,14 @@ h1 {
   color: #286090;
 }
 
-h4 {
+h3 {
   font-family: "Arvo", serif;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.tt-hint {
+	font-size: 4px;
 }
 
 li {
