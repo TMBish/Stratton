@@ -17,7 +17,8 @@ dim_map = function(dim) {
   out = switch(dim,
                "Rotten Tomatoes Score" = "rating",
                "Revenue" = "intl_revenue",
-               "Year" = "year")
+               "Year" = "year",
+               "Profit" = "profit")
 }
 
 # Type-ahead Lists ---------------------------------------------------------
@@ -230,6 +231,8 @@ append_box_office = function(films){
   
   films$prod_cost = sapply(test, "[", 2)
   
+  films$profit = films$intl_revenue - films$prod_cost
+  
   return(films)
   
 }
@@ -335,7 +338,7 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     dirc = switch(num, "1" = "y", "2" = "x")
     if (axis == 'rating'){
       format = paste0("this.",dirc," + '%'")
-    } else if (axis == 'intl_revenue') {
+    } else if (axis == 'intl_revenue' || axis == 'profit') {
       format = paste0("'$' + (this.", dirc, "/1000000).toFixed(0) + 'm'")
     } else if (axis == 'year') {
       format = paste0("this.", dirc)
@@ -352,7 +355,8 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     c_atr[[i]]$label_text = switch(axes[axis],
                               "rating" = "Rotten Tomatoes Score",
                               "intl_revenue" = "Box Office Revenue",
-                              "year" = "Year")
+                              "year" = "Year",
+                              "profit" = "Profit")
     
     # Formmat for the tooltip
     c_atr[[i]]$tooltip_form =  tool_format(axes[axis],axis)
@@ -364,10 +368,12 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     c_atr[[i]]$min = switch(axes[axis],
                             "rating" = 0,
                             "intl_revenue" = 0,
+                            "profit" = 0,
                             "year" = min(df[,axes[axis]]))
     c_atr[[i]]$max = switch(axes[axis],
                             "rating" = 100,
                             "intl_revenue" = 1.05 * max(df[,axes[axis]]),
+                            "profit" = 1.05 * max(df[,axes[axis]], na.rm = TRUE),
                             "year" = max(df[,axes[axis]]))
     
   }
@@ -450,6 +456,33 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     #   
     # }
                
+  
+  
+}
+
+
+# Smoother ----------------------------------------------------------------
+
+smooth_chart_h = function(high_chart, df, axes) {
+  
+  require(highcharter)
+  require(dplyr)
+  require(stringr)
+  require(ggplot2)
+  
+  
+  # ggplot does the heavy lifting
+  gg = ggplot(data = df, aes_string(x = axes[2], y = axes[1])) + geom_smooth()
+  
+  # Extract the smoothed
+  smoothed = ggplot_build(gg)$data[[1]][,c("x","y","ymin","ymax")]
+  
+  
+
+  # Add the line to the highchart object
+  high_chart %>%
+    hc_add_series(data = )
+  
   
   
 }

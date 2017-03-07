@@ -65,7 +65,7 @@ shinyServer(function(input, output, session) {
     d = filter(revals$data_set, !is.na(intl_revenue)) %>% cluster_df(clusters = input$clusters)
 
     # Update the reactive vals object
-    revals$chart = chart_cluster_h(d, input$search_input,axes = c(dim_map(input$y_axis), dim_map(input$x_axis)), clstr = TRUE)
+    revals$chart = chart_cluster_h(d, input$search_input, axes = c(dim_map(input$y_axis), dim_map(input$x_axis)), clstr = TRUE)
     
   })
   
