@@ -69,6 +69,24 @@ shinyServer(function(input, output, session) {
     
   })
   
+  # Loess Regression ----------------------------------------------------------
+  observeEvent(input$loess, {
+    
+    # Need the df
+    d = filter(revals$data_set, !is.na(intl_revenue))
+    
+    # Graph the chart object
+    c = revals$chart
+    
+    # Grab the current axes
+    axes = c(dim_map(input$y_axis), dim_map(input$x_axis))
+    
+    # Update the chart with a smoother
+    revals$chart = add_loess(c, d, axes)
+
+  })
+  
+  
   
   # Plot Structure Change ---------------------------------------------------
   observe({

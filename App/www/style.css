@@ -23,7 +23,15 @@ body, label, input, button, select {
 
 }
 
+#loess-label {
+	margin-top: 35px
+}
+
 #cluster {
+	margin-top: 25px
+}
+
+#loess {
 	margin-top: 25px
 }
 
@@ -56,8 +64,10 @@ h3 {
 	font-size: 4px;
 }
 
-li {
+li>a {
   font-family: "Arvo", serif;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 p {

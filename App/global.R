@@ -481,7 +481,7 @@ add_loess = function(high_chart, df, axes) {
     hc_add_series(name = "LOESS smooth",data = test, type = "line") %>%
     hc_plotOptions(
       line = list(
-        lineWidth = 10,
+        lineWidth = 7,
         lineColor = "rgba(0,0,0,0.1)",
         marker = list(radius=0))
     )

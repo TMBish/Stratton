@@ -59,7 +59,7 @@ shinyUI(
           # Sidebar -----------------------------------------------------------------
           # Sidebar with a slider input for number of bins 
           fluidRow(
-            column(4,
+            column(3,
                    wellPanel(
                      
                      # Actor / Director Input Box
@@ -86,21 +86,37 @@ shinyUI(
                      #verbatimTextOutput("do_plot")
                      
                    )
-            )
+            ),
+            
+          column(9,
+                 
+                 wellPanel(
+                  
+                   h2("Here's some stuff") 
+                   
+                 )
+                 
+          )
             
             # column(7, offset = 1,
             #        wellPanel())
           ),
           
-          # Body --------------------------------------------------------------------
+          # Tabs --------------------------------------------------------------------
           
-          wellPanel(
+          # wellPanel(
             
             tags$div(id = "body_div",
                      
                      tabsetPanel(
                        
-                       tabPanel("Scatter", 
+                       # Analyse Tab -------------------------------------------------------------
+                       
+                       tabPanel("Analyse", 
+                                
+                                #+++++++++++++++
+                                # Loading Gif
+                                #+++++++++++++++
                                 
                                 hidden(
                                   div(id = "loading-container",
@@ -117,7 +133,19 @@ shinyUI(
                                     conditionalPanel("output.do_plot > 0",
                                                      
                                                      br(),
-                                                     wellPanel(highchartOutput('chart', height=500)),
+                                                     
+                                                     #+++++++++++++++
+                                                     # The Chart
+                                                     #+++++++++++++++
+                                                     
+                                                     wellPanel(
+                                                       highchartOutput('chart', height=500)
+                                                     ),
+                                                     
+                                                     
+                                                     #+++++++++++++++
+                                                     # The options
+                                                     #+++++++++++++++
                                                      
                                                      fluidRow(
                                                        
@@ -158,16 +186,16 @@ shinyUI(
                                                                 h3("Analytics"),br(),
                                                                 
                                                                 fluidRow(
-                                                                  column(3, tags$label("Add LOESS regression line:")),
-                                                                  column(3, bsButton("loess", " Smooth", icon = icon("line-chart"), style = "primary")),
+                                                                  column(4, tags$label(id = "loess-label", "Add LOESS regression line:")),
+                                                                  column(2, bsButton("loess", " Smooth", icon = icon("line-chart"), style = "primary")),
                                                                   
-                                                                  column(3, numericInput("clusters",
+                                                                  column(4, numericInput("clusters",
                                                                                          label = "Number of film clusters:",
                                                                                          3,
                                                                                          min=1,
                                                                                          max=10)
                                                                   ),
-                                                                  column(3,
+                                                                  column(2,
                                                                          div(id = "cluster-button",
                                                                              bsButton("cluster", "Cluster", icon = icon("calculator"), style = "primary"))
                                                                   )
@@ -189,7 +217,9 @@ shinyUI(
       )
     )
   )
-)
+# )
+
+
 
 
 
