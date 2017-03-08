@@ -2,14 +2,15 @@ library(readr)
 library(dplyr)
 library(hrbrthemes)
 library(highcharter)
+library(shinyjs)
 
 options(stringsAsFactors = FALSE)
 
 # Load Timer --------------------------------------------------------------
 load_data = function() {
   Sys.sleep(2)
-  hide("loading_page")
-  show("main_content")
+  shinyjs::hide("loading_page")
+  shinyjs::show("main_content")
 }
 
 # Dimension Map --------------------------------------------------------------
@@ -118,10 +119,6 @@ get_tomatoes = function(person) {
   return(films)
   
 }
-
-
-
-
 # Box Office Mojo ---------------------------------------------------------
 get_financials = function(film) {
   
@@ -410,14 +407,14 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
       scatter = list(marker = list(radius = 6))
       ) %>%
     hc_yAxis(
-      title = list(text = y_lab),
+      title = list(text = c_atr$y$label_text),
       labels = list(formatter = JS(paste0("function(){return(",c_atr$y$label_form,")}"))), 
       min = c_atr$y$min,
       max = c_atr$y$max,
       linewidth = 1
     ) %>%
     hc_xAxis(
-      title = list(text = x_lab),
+      title = list(text = c_atr$x$label_text),
       labels = list(formatter = JS(paste0("function(){return(",c_atr$x$label_form,")}"))),
       min = c_atr$x$min,
       max = c_atr$x$max
@@ -462,7 +459,7 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
 
 
 # Smoother ----------------------------------------------------------------
-smooth_chart_h = function(high_chart, df, axes) {
+add_loess = function(high_chart, df, axes) {
   
   require(highcharter)
   require(dplyr)

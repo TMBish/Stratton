@@ -23,16 +23,9 @@ body, label, input, button, select {
 
 }
 
-#cluster-button {
-
-	display:flex;
-	align-items:center;    
-}
-
 #cluster {
 	margin-top: 25px
 }
-
 
 #headerSection {
   margin: -25px 0 20px;

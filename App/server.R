@@ -19,8 +19,8 @@ shinyServer(function(input, output, session) {
   observeEvent(input$search, {
     
     #Turn off plot
-    hide("chart_content")
-    show("loading-container")
+    shinyjs::hide("chart_content")
+    shinyjs::show("loading-container")
 
     # Get rotten tomatoes data for this person
     sel_films = get_tomatoes(input$search_input)
@@ -38,8 +38,8 @@ shinyServer(function(input, output, session) {
     
     #Update plot options
     revals$do_plot = 1
-    show("chart_content")
-    hide("loading-container")
+    shinyjs::show("chart_content")
+    shinyjs::hide("loading-container")
 
   })
   
