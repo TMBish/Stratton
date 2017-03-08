@@ -462,7 +462,6 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
 
 
 # Smoother ----------------------------------------------------------------
-
 smooth_chart_h = function(high_chart, df, axes) {
   
   require(highcharter)
@@ -470,20 +469,27 @@ smooth_chart_h = function(high_chart, df, axes) {
   require(stringr)
   require(ggplot2)
   
-  
   # ggplot does the heavy lifting
   gg = ggplot(data = df, aes_string(x = axes[2], y = axes[1])) + geom_smooth()
   
   # Extract the smoothed
-  smoothed = ggplot_build(gg)$data[[1]][,c("x","y","ymin","ymax")]
+  smoothed = ggplot_build(gg)$data[[1]][,c("x","y")]
   
+  names(smoothed) = c(axes[2], axes[1])
   
+  test = list_parse2(smoothed)
 
   # Add the line to the highchart object
-  high_chart %>%
-    hc_add_series(data = )
+  output = high_chart %>%
+    hc_add_series(name = "LOESS smooth",data = test, type = "line") %>%
+    hc_plotOptions(
+      line = list(
+        lineWidth = 10,
+        lineColor = "rgba(0,0,0,0.1)",
+        marker = list(radius=0))
+    )
   
-  
+  return(output)
   
 }
 

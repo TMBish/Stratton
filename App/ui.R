@@ -86,7 +86,10 @@ shinyUI(
                    #verbatimTextOutput("do_plot")
                    
                  )
-          )
+          ),
+          
+          column(7, offset = 1,
+                 wellPanel())
         ),
         
         # Body --------------------------------------------------------------------
