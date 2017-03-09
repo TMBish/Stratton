@@ -15,7 +15,6 @@ shinyUI(
     # Custom CSS
     singleton(
       tags$head(
-        includeScript(file.path('www', 'message-handler.js')),
         includeCSS(file.path('www', 'style.css'))
       )
     ),
@@ -53,6 +52,12 @@ shinyUI(
         
     ),
     
+    # Inspiration Modal -------------------------------------------------------
+    bsModal("searchpane", "Why did I even make this thing?", "inspiration", size = "large",
+            
+            HTML(inspiration_html)
+    ),
+    
     hidden(
       
       div(id = "main_content",
@@ -69,7 +74,7 @@ shinyUI(
                            
                            textInput.typeahead(
                              id = "search_input",
-                             placeholder="eg. danny mcbride",
+                             placeholder="eg. Danny McBride",
                              local= typeahead_data,
                              valueKey = "Name",
                              tokens=seq(1,nrow(typeahead_data)),
@@ -222,13 +227,8 @@ shinyUI(
     )
   )
 )
-# column(9,
-#        
-#        wellPanel(
-#          
-#          h2("Here's some stuff") 
-#          
-#        )
+
+
 
 
 

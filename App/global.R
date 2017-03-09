@@ -7,7 +7,7 @@ library(shinyjs)
 options(stringsAsFactors = FALSE)
 
 
-# HTML Overview -----------------------------------------------------------
+# HTML Customer -----------------------------------------------------------
 overview_html = "
 
 <p> Stratton is a hobby 
@@ -24,6 +24,39 @@ overview_html = "
 <p>
 "
   
+inspiration_html = "
+
+<p>
+
+The inspiration for this application originally came from 
+<a href = 'https://fivethirtyeight.com/datalab/the-four-types-of-tom-cruise-movies/'> this 538 article, </a>
+ which I thought was kinda cool. The centrepiece of which was this chart which I like a lot: </p>
+
+<img src='https://espnfivethirtyeight.files.wordpress.com/2015/07/hickey-datalab-tomcruise-1.png?quality=90&strip=all&w=1150&ssl=1'></img>
+
+<p>
+Additionally, while developing Stratton I realised I had previously seen, but had 
+forgotten about, an alarmingly similar website / application in 2 places 
+<a href = 'https://shiny.rstudio.com/gallery/movie-explorer.html'> here </a> and
+<a href = 'https://github.com/bokeh/bokeh/tree/master/examples/app/movies'> here </a>...
+<br><br>
+lol. It's funny how the brain works: I was convinced I'd conceived of a cool new original app idea. Anyway,
+mine's not exactly the same and includes some technical components that I think are pretty cool: </p>
+
+<ul>
+<li> No persistent data storage </li>
+<li> Thus dynamic web-scraping </li>
+<li> Multi-threading to increase scrape speed by <strong> 6x </strong>! </li>
+<li> Dynamic K-means clustering </li>
+<li> Highchart in R with lot's of customisation - just check out the <i>chart_cluster_h</i> function </li>
+</ul>
+
+<p> Anyway, hope you enjoyed reading these shitty ramblings. </p> 
+
+
+
+
+"
 # Load Timer --------------------------------------------------------------
 load_data = function() {
   Sys.sleep(2)
