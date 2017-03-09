@@ -6,6 +6,24 @@ library(shinyjs)
 
 options(stringsAsFactors = FALSE)
 
+
+# HTML Overview -----------------------------------------------------------
+overview_html = "
+
+<p> Stratton is a hobby 
+  <a href = 'https://shiny.rstudio.com/'> shiny application </a>
+    I created in my spare time. The app allows you to do some simple investigative
+    analysis of your favourite actors and directors. The app also showcases some of
+    the awesome features of Shiny and the growing ecosystem of satellite packages that
+    makes an application like this possible in just <strong> 860 lines of code </strong>.
+    
+    <br> <br>
+
+    Aside from <a href = 'http://www.abc.net.au/atthemovies/img/2004/about/david_large.jpg'> the obvious </a> 
+    a more detailed discusion of my inspiration can be found by clicking the button below:
+<p>
+"
+  
 # Load Timer --------------------------------------------------------------
 load_data = function() {
   Sys.sleep(2)

@@ -20,11 +20,18 @@ body, label, input, button, select {
 
 #loading-container {
 	text-align:center;
-
 }
 
 #loess-label {
 	margin-top: 35px
+}
+
+#search-box {
+	margin-top: 10px;
+}
+
+.typeahead, .tt-query, .tt-hint {
+	font-size: 18px !important;
 }
 
 #cluster {
@@ -58,10 +65,6 @@ h3 {
   font-family: "Arvo", serif;
   font-weight: bold;
   font-size: 18px;
-}
-
-.tt-hint {
-	font-size: 4px;
 }
 
 li>a {
