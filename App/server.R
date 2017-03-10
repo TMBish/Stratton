@@ -4,14 +4,14 @@ library(shiny)
 # Server logic
 shinyServer(function(input, output, session) {
   
-  # Load the screen
+  # Initial Loading Screen
   load_data()
   
   # Initialise a reactive vals object
   revals = reactiveValues(
     data_set = NULL, # Init data set as null
     do_plot = 0, # Turn off displays when App is opened
-    chart = NULL 
+    chart = NULL # Scatter chart object
   )
   
   
