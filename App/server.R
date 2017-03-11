@@ -1,4 +1,3 @@
-
 library(shiny)
 
 # Server logic
@@ -45,10 +44,13 @@ shinyServer(function(input, output, session) {
   
   # Output dataset ----------------------------------------------------------
   output$data_set = 
-    renderDataTable(revals$data_set,
-                    options = list(
-                      pageLength = 20
-                    ))
+    renderDataTable({
+      
+      dt = revals$data_set
+      names(dt) = c("Rotten Tomatoes Rating", "Film Title", "Box Office Gross", "Release Year", "Role", "Revenue", "Production Cost", "Profit")
+      return(dt)
+      }, options = list(pageLength = 10)
+      )
   
   
   # Plot Control ------------------------------------------------------------
@@ -62,7 +64,8 @@ shinyServer(function(input, output, session) {
   observeEvent(input$cluster, {
     
     # Re-run clustering using the clustering utility in global
-    d = filter(revals$data_set, !is.na(intl_revenue)) %>% cluster_df(clusters = input$clusters)
+    d = filter(revals$data_set, !is.na(intl_revenue)) %>% 
+      cluster_df(clusters = input$clusters, dimensions = c(dim_map(input$y_axis), dim_map(input$x_axis)))
 
     # Update the reactive vals object
     revals$chart = chart_cluster_h(d, input$search_input, axes = c(dim_map(input$y_axis), dim_map(input$x_axis)), clstr = TRUE)
@@ -97,7 +100,18 @@ shinyServer(function(input, output, session) {
                  !is.na(intl_revenue),
                  role %in% input$role_type)
       
-      revals$chart = chart_cluster_h(d, input$search_input,axes = c(dim_map(input$y_axis), dim_map(input$x_axis)))
+      if ("cluster" %in% names(d)) {
+      
+        revals$chart = chart_cluster_h(d, 
+                                       input$search_input,
+                                       axes = c(dim_map(input$y_axis), dim_map(input$x_axis)))
+                                       #clstr = TRUE)  
+      } else {
+        revals$chart = chart_cluster_h(d, 
+                                       input$search_input,
+                                       axes = c(dim_map(input$y_axis), dim_map(input$x_axis)))
+      }
+      
       
     }
 

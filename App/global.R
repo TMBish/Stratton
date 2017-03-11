@@ -7,15 +7,17 @@ library(shinyjs)
 options(stringsAsFactors = FALSE)
 
 
-# HTML Customer -----------------------------------------------------------
+# HTML Custom -----------------------------------------------------------
 overview_html = "
 
 <p> Stratton is a hobby 
   <a href = 'https://shiny.rstudio.com/'> shiny application </a>
     I created in my spare time. The app allows you to do some simple investigative
-    analysis of your favourite actors and directors. The app also showcases some of
+    analysis of your favourite actors and directors.
+    <br> <br>
+    The app also showcases some of
     the awesome features of Shiny and the growing ecosystem of satellite packages that
-    makes an application like this possible in just <strong> 860 lines of code </strong>.
+    enables the creation of a web-app like this in just <strong> 860 lines of code </strong>.
     
     <br> <br>
 
@@ -23,36 +25,39 @@ overview_html = "
     a more detailed discusion of my inspiration can be found by clicking the button below:
 <p>
 "
-  
+
 inspiration_html = "
 
 <p>
 
 The inspiration for this application originally came from 
 <a href = 'https://fivethirtyeight.com/datalab/the-four-types-of-tom-cruise-movies/'> this 538 article, </a>
- which I thought was kinda cool. The centrepiece of which was this chart which I like a lot: </p>
+ which I thought was kinda cool. The centrepiece of which was this chart, which groups 
+ Tom Cruise movies together using the dimensions of quality and profitibality: </p>
 
-<img src='https://espnfivethirtyeight.files.wordpress.com/2015/07/hickey-datalab-tomcruise-1.png?quality=90&strip=all&w=1150&ssl=1'></img>
+<img  align='centre' height='400' width='450' src='https://espnfivethirtyeight.files.wordpress.com/2015/07/hickey-datalab-tomcruise-1.png?quality=90&strip=all&w=1150&ssl=1'></img>
+
+<br><br>
 
 <p>
-Additionally, while developing Stratton I realised I had previously seen, but had 
-forgotten about, an alarmingly similar website / application in 2 places 
+While approximately 75% of the way through developing Stratton I realised I had previously seen, but had 
+forgotten about, an alarmingly similar application in 2 places 
 <a href = 'https://shiny.rstudio.com/gallery/movie-explorer.html'> here </a> and
-<a href = 'https://github.com/bokeh/bokeh/tree/master/examples/app/movies'> here </a>...
+<a href = 'https://github.com/bokeh/bokeh/tree/master/examples/app/movies'> here </a>...lol.
+
 <br><br>
-lol. It's funny how the brain works: I was convinced I'd conceived of a cool new original app idea. Anyway,
-mine's not exactly the same and includes some technical components that I think are pretty cool: </p>
+
+Anyway, mine's not exactly the same and includes some technical features that I think are pretty cool: </p>
 
 <ul>
-<li> No persistent data storage </li>
-<li> Thus dynamic web-scraping </li>
-<li> Multi-threading to increase scrape speed by <strong> 6x </strong>! </li>
-<li> Dynamic K-means clustering </li>
-<li> Highchart in R with lot's of customisation - just check out the <i>chart_cluster_h</i> function </li>
+<li> No persistent data storage; </li>
+<li> (Thus) Dynamic web-scraping; </li>
+<li> Multi-threading to increase scrape speed by <strong> 6x </strong>!; </li>
+<li> Dynamic K-means clustering; and </li>
+<li> Parameterised high-charting, just check out the <i>chart_cluster_h</i> function (it's a bit of a mess) </li>
 </ul>
 
-<p> Anyway, hope you enjoyed reading these shitty ramblings. </p> 
-
+</p>
 
 
 
@@ -61,7 +66,7 @@ mine's not exactly the same and includes some technical components that I think 
 load_data = function() {
   Sys.sleep(2)
   shinyjs::hide("loading_page")
-  shinyjs::show("main_content")
+  shinyjs::show("app_body")
 }
 
 # Dimension Map --------------------------------------------------------------
@@ -375,7 +380,7 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
   require(highcharter)
   require(dplyr)
   require(stringr)
-
+  
   #++++++++++++++++++++++++++++++++++
   # Dynamically build chart attributes
   #++++++++++++++++++++++++++++++++++
@@ -401,10 +406,10 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     
     # Axis labels
     c_atr[[i]]$label_text = switch(axes[axis],
-                              "rating" = "Rotten Tomatoes Score",
-                              "intl_revenue" = "Box Office Revenue",
-                              "year" = "Year",
-                              "profit" = "Profit")
+                                   "rating" = "Rotten Tomatoes Score",
+                                   "intl_revenue" = "Box Office Revenue",
+                                   "year" = "Year",
+                                   "profit" = "Profit")
     
     # Formmat for the tooltip
     c_atr[[i]]$tooltip_form =  tool_format(axes[axis],axis)
@@ -426,7 +431,7 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     
   }
   
-
+  
   #++++++++++++++++++
   # Build base chart
   #++++++++++++++++++
@@ -456,7 +461,7 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     hc_plotOptions(
       divBackgroundImage = "osiris-small.png",
       scatter = list(marker = list(radius = 6))
-      ) %>%
+    ) %>%
     hc_yAxis(
       title = list(text = c_atr$y$label_text),
       labels = list(formatter = JS(paste0("function(){return(",c_atr$y$label_form,")}"))), 
@@ -487,23 +492,23 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
                    "'<strong>", c_atr$y$label_text, ": </strong> ' + ", c_atr$y$tooltip_form, " + '<br>' + ",
                    "'<strong>", c_atr$x$label_text, ": </strong> ' + ", c_atr$x$tooltip_form,
                    ")}" 
-                )
+                 )
                )
     ) %>%
     hc_exporting(enabled =TRUE)
   
-    # Finding Convex Hull Around Clusters
-    # hulls = df %>% sample_n(0)
-    # for (c in unique(df$cluster)) {
-    #   
-    #   df_c = df %>% filter(cluster == c)
-    #   
-    #   hull = df[chull(df[,axes[1]],df[,axes[2]]),]
-    #   
-    #   hulls = hulls %>% union_all(hull)
-    #   
-    # }
-               
+  # Finding Convex Hull Around Clusters
+  # hulls = df %>% sample_n(0)
+  # for (c in unique(df$cluster)) {
+  #   
+  #   df_c = df %>% filter(cluster == c)
+  #   
+  #   hull = df[chull(df[,axes[1]],df[,axes[2]]),]
+  #   
+  #   hulls = hulls %>% union_all(hull)
+  #   
+  # }
+  
   
   
 }
@@ -526,14 +531,15 @@ add_loess = function(high_chart, df, axes) {
   names(smoothed) = c(axes[2], axes[1])
   
   test = list_parse2(smoothed)
-
+  
   # Add the line to the highchart object
   output = high_chart %>%
     hc_add_series(name = "LOESS smooth",data = test, type = "line") %>%
     hc_plotOptions(
       line = list(
-        lineWidth = 7,
-        lineColor = "rgba(0,0,0,0.1)",
+        lineWidth = 6,
+        dashStyle = "Dash",
+        lineColor = "rgba(0,0,0,0.3)",
         marker = list(radius=0))
     )
   

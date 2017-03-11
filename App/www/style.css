@@ -23,11 +23,15 @@ body, label, input, button, select {
 }
 
 #loess-label {
-	margin-top: 35px
+	margin-top: 25px;
 }
 
 #search-box {
 	margin-top: 10px;
+}
+
+#Timeline {
+	text-align: center;
 }
 
 .typeahead, .tt-query, .tt-hint {
@@ -71,6 +75,10 @@ li>a {
   font-family: "Arvo", serif;
   font-weight: bold;
   font-size: 18px;
+}
+
+li {
+  font-family: "Arvo", serif;
 }
 
 p {
