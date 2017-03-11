@@ -6,6 +6,9 @@ library(shinyjs)
 
 options(stringsAsFactors = FALSE)
 
+# Load Utils --------------------------------------------------------------
+sapply(list.files("./utils/", pattern = "*.R$", full.names = TRUE),source)
+
 # HTML Custom -----------------------------------------------------------
 overview_html = "
 
