@@ -1,10 +1,21 @@
 # Produce Highcharts Graph --------------------------------------------------------------
-chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr = FALSE) {
+chart_cluster_h = function(data_object, # Data object
+                           actor, # Title for graph
+                           axes = c("rating", "intl_revenue"), # Axes Dimensions
+                           clstr = FALSE, # Binary whether to add cluster
+                           lss = FALSE # Binary on whether to add loess
+                           ) {
   
   require(highcharter)
   require(dplyr)
   require(stringr)
   
+  # For shorter code m8
+  df = data_object$data
+  
+  # Filter for complete cases
+  df = df %>% filter_(paste0("!is.na(",axes[1],")"), paste0(paste0("!is.na(",axes[2],")")))
+
   #++++++++++++++++++++++++++++++++++
   # Dynamically build chart attributes
   #++++++++++++++++++++++++++++++++++
@@ -64,7 +75,9 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
   # really really handy for me
   if (clstr) {
     
-    base = hchart(df, "scatter", hcaes_string(x = axes[2], y = axes[1], color = 'cluster'))
+    add_clus = df %>% inner_join(data_object$clusters, by = "title")
+    
+    base = hchart(add_clus, "scatter", hcaes_string(x = axes[2], y = axes[1], color = 'cluster'))
     
   } else {
     
@@ -77,10 +90,6 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
   #+++++++++++++++
   
   output = 
-    # hc_add_series(data = hulls %>% filter(cluster==2), 
-    #               hcaes_string(x = 'intl_revenue', y = 'rating', color = 'cluster'),
-    #               type = "polygon"
-    #               ) %>%
     base %>%
     hc_plotOptions(
       divBackgroundImage = "osiris-small.png",
@@ -121,19 +130,26 @@ chart_cluster_h = function(df, actor, axes = c("rating", "intl_revenue"), clstr 
     ) %>%
     hc_exporting(enabled =TRUE)
   
-  # Finding Convex Hull Around Clusters
-  # hulls = df %>% sample_n(0)
-  # for (c in unique(df$cluster)) {
-  #   
-  #   df_c = df %>% filter(cluster == c)
-  #   
-  #   hull = df[chull(df[,axes[1]],df[,axes[2]]),]
-  #   
-  #   hulls = hulls %>% union_all(hull)
-  #   
-  # }
   
+  #++++++++++++++++++
+  # Add Loess
+  #++++++++++++++++++
   
+  # Add the line to the highchart object
+  if (lss) {
+
+    output = output %>%
+      hc_add_series(name = "LOESS smooth",data = data_object$loess, type = "line") %>%
+      hc_plotOptions(
+        line = list(
+          lineWidth = 6,
+          dashStyle = "Dash",
+          lineColor = "rgba(0,0,0,0.3)",
+          marker = list(radius=0))
+      )
+  }
+  
+  return(output)
   
 }
 

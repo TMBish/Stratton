@@ -1,5 +1,5 @@
 # Smoother ----------------------------------------------------------------
-add_loess = function(high_chart, df, axes) {
+add_loess = function(df, axes) {
   
   require(highcharter)
   require(dplyr)
@@ -14,18 +14,7 @@ add_loess = function(high_chart, df, axes) {
   
   names(smoothed) = c(axes[2], axes[1])
   
-  test = list_parse2(smoothed)
-  
-  # Add the line to the highchart object
-  output = high_chart %>%
-    hc_add_series(name = "LOESS smooth",data = test, type = "line") %>%
-    hc_plotOptions(
-      line = list(
-        lineWidth = 6,
-        dashStyle = "Dash",
-        lineColor = "rgba(0,0,0,0.3)",
-        marker = list(radius=0))
-    )
+  output = list_parse2(smoothed)
   
   return(output)
   

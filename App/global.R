@@ -3,6 +3,10 @@ library(dplyr)
 library(hrbrthemes)
 library(highcharter)
 library(shinyjs)
+library(shiny)
+library(shinyBS)
+library(shinysky)
+
 
 options(stringsAsFactors = FALSE)
 

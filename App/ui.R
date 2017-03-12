@@ -1,9 +1,3 @@
-
-library(shiny)
-library(shinyBS)
-library(shinysky)
-library(shinyjs)
-
 # Define UI for application that draws a histogram
 shinyUI(
   
@@ -214,15 +208,15 @@ shinyUI(
                                                 h3("Currently Under Development")
                                             )
                                           )
-                               ),
-                               tabPanel("Raw Data", conditionalPanel("output.do_plot > 0",wellPanel(dataTableOutput("data_set"))))
+                                 ),
+                                 tabPanel("Raw Data", conditionalPanel("output.do_plot > 0",wellPanel(dataTableOutput("data_set"))))
+                               )
                       )
                     )
                   )
               )
             )
   )
-)
 )
 
 

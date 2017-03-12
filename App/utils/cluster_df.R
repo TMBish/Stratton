@@ -7,7 +7,9 @@ cluster_df = function(df, clusters = 3, dimensions = c("rating", "intl_revenue")
   
   kmean_model = kmeans(train_matrix, clusters)
   
-  output = df %>% mutate(cluster = factor(kmean_model$cluster))
+  output = df %>%
+    mutate(cluster = factor(kmean_model$cluster)) %>%
+    select(title, cluster)
   
   return(output)
   

@@ -1,5 +1,3 @@
-library(shiny)
-
 # Server logic
 shinyServer(function(input, output, session) {
   
@@ -8,7 +6,9 @@ shinyServer(function(input, output, session) {
   
   # Initialise a reactive vals object
   revals = reactiveValues(
-    data_set = NULL, # Init data set as null
+    data_object = list(), # Data object
+    clstr = FALSE, # Control when clustering is graphed
+    loess = FALSE, # Control when loess is graphed
     do_plot = 0, # Turn off displays when App is opened
     chart = NULL # Scatter chart object
   )
@@ -28,13 +28,15 @@ shinyServer(function(input, output, session) {
     sel_films_comp = append_box_office(sel_films)
     
     # Save as the master data-set
-    revals$data_set = sel_films_comp
+    revals$data_object$data = sel_films_comp
     
-    # Create plot
-    d = filter(revals$data_set, !is.na(intl_revenue)) %>% cluster_df()
-    
-    revals$chart = chart_cluster_h(d, input$search_input)
-    
+    # Update the reactive vals object
+    revals$chart = chart_cluster_h(revals$data_object,
+                                   input$search_input,
+                                   axes = c(dim_map(input$y_axis), dim_map(input$x_axis)),
+                                   clstr = revals$clstr,
+                                   lss = revals$loess)
+
     #Update plot options
     revals$do_plot = 1
     shinyjs::show("chart_content")
@@ -43,14 +45,11 @@ shinyServer(function(input, output, session) {
   })
   
   # Output dataset ----------------------------------------------------------
-  output$data_set = 
-    renderDataTable({
-      
-      dt = revals$data_set
-      names(dt) = c("Rotten Tomatoes Rating", "Film Title", "Box Office Gross", "Release Year", "Role", "Revenue", "Production Cost", "Profit")
-      return(dt)
-      }, options = list(pageLength = 10)
-      )
+  output$data_object = 
+    renderDataTable(revals$data_object$data,
+                    options = list(
+                      pageLength = 20
+                    ))
   
   
   # Plot Control ------------------------------------------------------------
@@ -63,69 +62,98 @@ shinyServer(function(input, output, session) {
   # Re-run cluster ----------------------------------------------------------
   observeEvent(input$cluster, {
     
-    # Re-run clustering using the clustering utility in global
-    d = filter(revals$data_set, !is.na(intl_revenue)) %>% 
-      cluster_df(clusters = input$clusters, dimensions = c(dim_map(input$y_axis), dim_map(input$x_axis)))
-
-    # Update the reactive vals object
-    revals$chart = chart_cluster_h(d, input$search_input, axes = c(dim_map(input$y_axis), dim_map(input$x_axis)), clstr = TRUE)
+    x = dim_map(input$x_axis)
+    y = dim_map(input$y_axis)
     
-  })
+    # Re-run clustering using the clustering utility in global
+    d = revals$data_object$data %>%
+        filter_(paste0("!is.na(",y,")"),
+                paste0(paste0("!is.na(",x,")"))) %>% 
+        cluster_df(clusters = input$clusters, dimensions = c(y,x))
+  
+    # Add clusters to data object  
+    revals$data_object$clusters = d
+    
+    # Turn on cluster plotting
+    revals$clstr = TRUE
+    
+    # Update the reactive vals object
+    revals$chart = chart_cluster_h(revals$data_object,
+                                   input$search_input,
+                                   axes = c(y, x),
+                                   clstr = revals$clstr,
+                                   lss = revals$loess)
+    })
   
   # Loess Regression ----------------------------------------------------------
   observeEvent(input$loess, {
     
+    x = dim_map(input$x_axis)
+    y = dim_map(input$y_axis)
+    
     # Need the df
-    d = filter(revals$data_set, !is.na(intl_revenue))
-    
-    # Graph the chart object
-    c = revals$chart
-    
-    # Grab the current axes
-    axes = c(dim_map(input$y_axis), dim_map(input$x_axis))
-    
-    # Update the chart with a smoother
-    revals$chart = add_loess(c, d, axes)
+    d = revals$data_object$data %>%
+      filter_(paste0("!is.na(",y,")"),
+              paste0(paste0("!is.na(",x,")"))
+              )
 
+    # Add loess
+    revals$data_object$loess = add_loess(d, c(y, x))
+    
+    # Turn on loess plotting
+    revals$loess = TRUE
+    
+    # Update the reactive vals object
+    revals$chart =  chart_cluster_h(revals$data_object,
+                                   input$search_input,
+                                   axes = c(y, x),
+                                   clstr = revals$clstr,
+                                   lss = revals$loess)
   })
-  
-  
   
   # Plot Structure Change ---------------------------------------------------
   observe({
 
     if (revals$do_plot > 0) {
-     
-      d = filter(revals$data_set, 
-                 !is.na(intl_revenue),
+      
+      isolate({
+        iso_title = input$search_input
+        iso_data = revals$data_object
+      })
+
+      revals$data_object$data= 
+        filter(iso_data$data, 
                  role %in% input$role_type)
+
       
-      if ("cluster" %in% names(d)) {
-      
-        revals$chart = chart_cluster_h(d, 
-                                       input$search_input,
-                                       axes = c(dim_map(input$y_axis), dim_map(input$x_axis)))
-                                       #clstr = TRUE)  
-      } else {
-        revals$chart = chart_cluster_h(d, 
-                                       input$search_input,
-                                       axes = c(dim_map(input$y_axis), dim_map(input$x_axis)))
-      }
-      
+      # Update the reactive vals object
+      revals$chart = chart_cluster_h(iso_data,
+                                     iso_title,
+                                     axes = c(dim_map(input$y_axis), dim_map(input$x_axis)),
+                                     clstr = revals$clstr,
+                                     lss = revals$loess)
       
     }
 
   })
   
-  
+  # Control the plotting ------------------------------------------------------------
+  observe({
+    
+    # Flip the plotting binaries with a dependency on the axes
+    alert_me_x = input$x_axis
+    alert_me_y = input$y_axis
+    
+    revals$loess = FALSE
+    revals$clstr = FALSE
+    
+  })
   
   # Output Chart ------------------------------------------------------------
   output$chart = 
     renderHighchart({
       revals$chart
     })
-  
-  
   
 })
 
