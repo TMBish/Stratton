@@ -15,7 +15,6 @@ sapply(list.files("./utils/", pattern = "*.R$", full.names = TRUE),source)
 
 # HTML Custom -----------------------------------------------------------
 overview_html = "
-
 <p> Stratton is a hobby 
   <a href = 'https://shiny.rstudio.com/'> shiny application </a>
     I created in my spare time. The app allows you to do some simple investigative
@@ -33,9 +32,7 @@ overview_html = "
 "
 
 inspiration_html = "
-
 <p>
-
 The inspiration for this application originally came from 
 <a href = 'https://fivethirtyeight.com/datalab/the-four-types-of-tom-cruise-movies/'> this 538 article, </a>
  which I thought was kinda cool. The centrepiece of which was this chart, which groups 
@@ -64,9 +61,6 @@ Anyway, mine's not exactly the same and includes some technical features that I 
 </ul>
 
 </p>
-
-
-
 "
 # Load Timer --------------------------------------------------------------
 load_data = function() {

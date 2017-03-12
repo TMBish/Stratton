@@ -75,9 +75,22 @@ chart_cluster_h = function(data_object, # Data object
   # really really handy for me
   if (clstr) {
     
-    add_clus = df %>% inner_join(data_object$clusters, by = "title")
+    add_clus = df %>% inner_join(data_object$clusters$data, by = "title")
     
     base = hchart(add_clus, "scatter", hcaes_string(x = axes[2], y = axes[1], color = 'cluster'))
+    
+    # Add the cluster centroids
+    centroids = data_object$clusters$centers
+    for (i in 1:nrow(centroids)) {
+      
+      base = base %>%
+        hc_add_series(name = "cluster Center",
+                      data = list_parse2(rev(centroids[i,])),
+                      type = "scatter",
+                      marker = list(symbol = "plus", radius = 14),
+                      color = colorize(1:nrow(centroids))[i])
+    }
+    
     
   } else {
     
@@ -119,12 +132,25 @@ chart_cluster_h = function(data_object, # Data object
                # This hurt my brain so much
                formatter = JS(
                  paste0(
-                   "function(){return (",
-                   "'<strong>' + this.point.title + '</strong> <br>' + ",
-                   "'<strong> Role: </strong>' + this.point.role + '<br>' + ",
-                   "'<strong>", c_atr$y$label_text, ": </strong> ' + ", c_atr$y$tooltip_form, " + '<br>' + ",
-                   "'<strong>", c_atr$x$label_text, ": </strong> ' + ", c_atr$x$tooltip_form,
-                   ")}" 
+                   "function(){
+                   
+                     if (this.series.name == 'cluster Center') {
+  
+                        return('<strong> Cluster Centroid </strong>')
+
+                     } else if (this.series.name) {
+
+                        return('<strong> LOESS Smooth </strong>')
+
+                     } else {
+                       return (",
+                               "'<strong>' + this.point.title + '</strong> <br>' + ",
+                               "'<strong> Role: </strong>' + this.point.role + '<br>' + ",
+                               "'<strong>", c_atr$y$label_text, ": </strong> ' + ", c_atr$y$tooltip_form, " + '<br>' + ",
+                               "'<strong>", c_atr$x$label_text, ": </strong> ' + ", c_atr$x$tooltip_form,
+                       ")
+                     }
+                   }" 
                  )
                )
     ) %>%

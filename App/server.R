@@ -23,7 +23,6 @@ shinyServer(function(input, output, session) {
 
     # Get rotten tomatoes data for this person
     sel_films = get_tomatoes(input$search_input)
-    
     # Get box office data for this person
     sel_films_comp = append_box_office(sel_films)
     
@@ -141,9 +140,8 @@ shinyServer(function(input, output, session) {
   observe({
     
     # Flip the plotting binaries with a dependency on the axes
-    alert_me_x = input$x_axis
-    alert_me_y = input$y_axis
-    
+    alert_me = paste(input$x_axis, input$y_axis)
+
     revals$loess = FALSE
     revals$clstr = FALSE
     
