@@ -1,99 +1,88 @@
 # Box Office Mojo ---------------------------------------------------------
-get_financials = function(film) {
+get_financials = function(film, year, actor) {
   
   require(assertthat)
   require(dplyr)
   require(rvest)
   require(stringr)
-  
-  
-  film = "Cast Away"
-  
-  session = html_session("https://www.imdb.com")
-  
-  form = html_form(session)[[1]]
-  
-  form = set_values(form, q = film)
-  
-  url = submit_form(session, form)
-  
-  top_result = read_html(url) %>% html_nodes(".result_text , .result_text a")
-  
-  
-  
-  
-  
-  # Box office mojo seems to have a specific URL structure, including:
-  # 1. Dropping a leading "The" for movies starting with the word
-  # 2. Removing all spaces (obviously)
-  # 3. Lower casing (obviously)
-  # 4. Removing all punctuation
-  # 5. Replacing ampersand with and
-  # 6. Removing trailing parenthetic movie descriptions
-  #   Note: There are many other idiosyncracies that I can't account for
-  #   for example try looking up the kids movie "Megamind". 
-  #   What the fuck man
-  format_url = function(film) { 
-    
-    base = "http://www.boxofficemojo.com/movies/?id=%s.htm"
-    
-    film = 
-      str_replace(film, "(?i)^the ", "") %>%
-      tolower() %>%
-      str_replace_all(" ", "") %>%
-      str_replace_all("\\&", "and") %>%
-      str_replace_all("\\([a-z0-9]+\\)","") %>%
-      str_replace_all("[[:punct:]]", "")
-    
-    url = sprintf(base, film)
-    
-    return(url)
-    
-  }
+  require(xml2)
   
   v = tryCatch({
+   
+    film = str_replace_all(film," ", "+")
+    search_url = sprintf("http://www.imdb.com/find?q=%s&s=exaxt_match=True&tt=on", film)
     
-    film_url = format_url(film)
-    
-    # Look up bold elements on the mojo page
-    mojo_page = 
-      film_url %>%
+    search_results = 
+      search_url %>%
       read_html() %>%
-      html_nodes("b") %>%
-      html_text()
+      html_nodes(".result_text")
     
-    ind = grep("Worldwide:", mojo_page, ignore.case = TRUE)
+    links = search_results %>% xml_children() %>% html_attr("href")
+    description = search_results %>% html_text()
     
-    revenue = as.integer(str_replace_all(mojo_page[ind + 1], "(\\$)|(,)",""))
+    plausible = grep("^\\/title\\/tt.+", links)
     
-    # Cost line is unfortunately fixed
-    cost_string = mojo_page[9]
+    matching_year = grep(year, description[plausible])
     
-    # Some handy formatting on the production cost!
-    # Thanks box office mojo!
-    if (cost_string == "N/A") {
+    if (length(matching_year) == 1) {
       
-      cost = NA
+      film_url = sprintf("http://www.imdb.com/title%s", str_extract(links[matching_year],"^\\/title\\/tt[0-9]+"))
       
     } else {
       
-      # Reformat "million / thousand" string
-      magnitude = str_extract(cost_string, "(?i)million|thousand")
+      potential_films = 
+        links[grep("^\\/title\\/tt.+",links)] %>%
+        str_extract("^\\/title\\/tt[0-9]+")
       
-      multipler = ifelse(magnitude == "million", 1000000, 1000)
+      # Test each URL for instances of the actor's name
+      test_suffix = function(imdb_suffix, actor) {
+        
+        url = sprintf("http://www.imdb.com%s", imdb_suffix)
+        
+        cast_links = url %>%
+          read_html() %>%
+          html_nodes("#titleCast .itemprop") %>%
+          html_text()
+        
+        actor_count = sum(grepl(actor, cast_links))
+        
+        return(actor_count)
+      }
       
-      cost = as.integer(str_replace_all(cost_string, "(\\$)|([a-z])","")) * multipler
+      name_count = unlist(lapply(potential_films, function(x){return(test_suffix(x, actor))}))
+      
+      candidate = which.max(name_count)
+      
+      film_url = sprintf("http://www.imdb.com%s", potential_films[candidate])
       
     }
     
-    return(c(revenue, cost))
+    block = 
+      film_url %>%
+      read_html() %>%
+      html_nodes("#titleDetails .txt-block") %>%
+      html_text() %>% paste0(collapse = "")
+    
+    cost = 
+      str_extract(block, "Budget\\:.+\\$[0-9\\,]+") %>%
+      str_extract("\\$[0-9\\,]+") %>%
+      str_replace_all("[\\$\\,]","") %>%
+      as.integer()
+    
+    revenue = 
+      str_extract(block, "Gross\\:.+\\$[0-9\\,]+") %>%
+      str_extract("\\$[0-9\\,]+") %>%
+      str_replace_all("[\\$\\,]","") %>%
+      as.integer()
+    
+    return(gross_revenue, cost) 
     
   }, error = function(e) {
     
-    return(c(NA,NA))
-    
+    return(c(NA, NA))
+  
   })
   
   return(v)
-  
+
 }
