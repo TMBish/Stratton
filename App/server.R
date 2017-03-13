@@ -24,13 +24,13 @@ shinyServer(function(input, output, session) {
     # Get rotten tomatoes data for this person
     sel_films = get_tomatoes(input$search_input)
     # Get box office data for this person
-    sel_films_comp = append_box_office(sel_films)
+    sel_films_comp = append_financials(sel_films)
     
     # Save as the master data-set
     revals$data_object$data = sel_films_comp
     
     # Update the reactive vals object
-    revals$chart = chart_cluster_h(revals$data_object,
+    revals$chart = chart_scatter_h(revals$data_object,
                                    input$search_input,
                                    axes = c(dim_map(input$y_axis), dim_map(input$x_axis)),
                                    clstr = revals$clstr,
@@ -42,14 +42,6 @@ shinyServer(function(input, output, session) {
     shinyjs::hide("loading-container")
 
   })
-  
-  # Output dataset ----------------------------------------------------------
-  output$data_object = 
-    renderDataTable(revals$data_object$data,
-                    options = list(
-                      pageLength = 20
-                    ))
-  
   
   # Plot Control ------------------------------------------------------------
   output$do_plot = renderText({
@@ -77,7 +69,7 @@ shinyServer(function(input, output, session) {
     revals$clstr = TRUE
     
     # Update the reactive vals object
-    revals$chart = chart_cluster_h(revals$data_object,
+    revals$chart = chart_scatter_h(revals$data_object,
                                    input$search_input,
                                    axes = c(y, x),
                                    clstr = revals$clstr,
@@ -103,7 +95,7 @@ shinyServer(function(input, output, session) {
     revals$loess = TRUE
     
     # Update the reactive vals object
-    revals$chart =  chart_cluster_h(revals$data_object,
+    revals$chart =  chart_scatter_h(revals$data_object,
                                    input$search_input,
                                    axes = c(y, x),
                                    clstr = revals$clstr,
@@ -126,7 +118,7 @@ shinyServer(function(input, output, session) {
 
       
       # Update the reactive vals object
-      revals$chart = chart_cluster_h(iso_data,
+      revals$chart = chart_scatter_h(iso_data,
                                      iso_title,
                                      axes = c(dim_map(input$y_axis), dim_map(input$x_axis)),
                                      clstr = revals$clstr,
@@ -151,6 +143,38 @@ shinyServer(function(input, output, session) {
   output$chart = 
     renderHighchart({
       revals$chart
+    })
+  
+  # Output dataset ----------------------------------------------------------
+  output$data_set = 
+    renderDataTable({
+      
+      dt = revals$data_object$data %>%
+        select(title, year,
+               rating, role,
+               intl_revenue, prod_cost,
+               profit)
+      
+      dt_out = 
+        datatable(
+        dt, extensions = c('Buttons', 'Scroller'),
+        rownames = FALSE, height = 400,
+        colnames = c("Film", "Release Year","Rotten Tomatoes Rating", "Role","Gross Box Office Revenue", "Production Cost","Profit"),
+        options = list(
+          dom = 'Bfrtip',
+          scrollY = 200,
+          pageLength = 20,
+          scroller = TRUE,
+          buttons = 
+            list('copy', list(
+              extend = 'collection',
+              buttons = c('csv', 'excel', 'pdf'),
+              text = 'Download'
+            ))
+          )
+      )
+      
+      return(dt_out)
     })
   
 })

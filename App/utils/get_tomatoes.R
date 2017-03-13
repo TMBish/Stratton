@@ -5,7 +5,7 @@ get_tomatoes = function(person) {
   require(stringr)
   require(dplyr)
   
-  person_string = str_replace_all(tolower(person), " ", "_")
+  person_string = str_replace_all(str_replace_all(tolower(person), " ", "_"),"-"," ")
   
   celeb_url = sprintf("https://www.rottentomatoes.com/celebrity/%s/", person_string)
   

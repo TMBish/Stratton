@@ -6,6 +6,7 @@ library(shinyjs)
 library(shiny)
 library(shinyBS)
 library(shinysky)
+library(DT)
 
 
 options(stringsAsFactors = FALSE)

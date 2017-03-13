@@ -1,5 +1,5 @@
 # Produce Ggplot Graph -----------------------------------------------------------
-chart_cluster_ggplot = function(df, axes = c("rating", "intl_revenue")) {
+chart_scatter_ggplot = function(df, axes = c("rating", "intl_revenue")) {
   
   require(ggplot2)
   require(hrbrthemes)

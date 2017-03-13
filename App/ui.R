@@ -18,20 +18,34 @@ shinyUI(
                 #   id = "header_logo",
                 #   src = "icon_black.jpg"
                 # ),
-                
-                h1("STRATTON"),
-                
-                # author info
-                
-                span(
-                  style = "font-size: 1.2em",
-                  span("Created by "),
-                  a("Tom Bishop", href = "wwww.google.com"),
-                  HTML("&bull;"),
-                  span("Code"),
-                  a("on GitHub", href = "https://github.com/TMBish/Stratton"),
-                  HTML("&bull;")
-                )
+                fluidRow(
+                  column(1, tags$img(id = "header-logo",src = "icon.png")),
+                  column(1,
+                          h1(id = "strat-title", "Stratton")
+                  ),
+                  # author info
+                  div(id = "app-details",
+                  column(2, offset= 8,
+                         tags$p(
+                           span(
+                             style = "font-size: 1.2em",
+                             HTML("&bull;"),
+                             span("Created by "),
+                             a("Tom Bishop", href = "https://github.com/TMBish/"),
+                             HTML("&bull;")
+                           )
+                         ),
+                         tags$p(
+                           span(
+                             style = "font-size: 1.2em",
+                             HTML("&bull;"),
+                             span("Code"),
+                             a("on GitHub", href = "https://github.com/TMBish/Stratton"),
+                             HTML("&bull;")
+                           )
+                         )
+                  )
+                ))
             ),
             
             

@@ -1,5 +1,5 @@
 # Append Box Office ---------------------------------------------------------
-append_box_office = function(films){
+append_financials = function(films){
   
   require(parallel)
   

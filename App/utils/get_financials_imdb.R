@@ -6,6 +6,23 @@ get_financials = function(film) {
   require(rvest)
   require(stringr)
   
+  
+  film = "Cast Away"
+  
+  session = html_session("https://www.imdb.com")
+  
+  form = html_form(session)[[1]]
+  
+  form = set_values(form, q = film)
+  
+  url = submit_form(session, form)
+  
+  top_result = read_html(url) %>% html_nodes(".result_text , .result_text a")
+  
+  
+  
+  
+  
   # Box office mojo seems to have a specific URL structure, including:
   # 1. Dropping a leading "The" for movies starting with the word
   # 2. Removing all spaces (obviously)
@@ -80,36 +97,3 @@ get_financials = function(film) {
   return(v)
   
 }
-
-append_box_office = function(films){
-  
-  require(parallel)
-  
-  #+++++++++++++++++++++
-  # Begin Multi-Thread'n
-  #+++++++++++++++++++++
-  
-  # Use most of the comp cores
-  no_cores = detectCores() - 2
-  
-  # Initiate cluster
-  cl = makeCluster(no_cores)
-  
-  test = parLapply(cl, films$title, get_financials)
-  
-  stopCluster(cl)
-  
-  #+++++++++++++++++++
-  # End Multi-Thread'n
-  #+++++++++++++++++++
-  
-  films$intl_revenue = sapply(test, "[", 1)
-  
-  films$prod_cost = sapply(test, "[", 2)
-  
-  films$profit = films$intl_revenue - films$prod_cost
-  
-  return(films)
-  
-}
-
