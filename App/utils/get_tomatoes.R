@@ -71,7 +71,9 @@ get_tomatoes = function(person) {
           rating != "No Score Yet",
           role != "Null"
         ) %>%
-        mutate(rating = as.integer(rating))
+        mutate(
+          rating = as.integer(rating),
+          actor = person)
       
     }, error = function(e) {
       message("Actor or director not found")  

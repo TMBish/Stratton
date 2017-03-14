@@ -3,8 +3,6 @@ append_financials = function(films){
   
   require(parallel)
   
-  film_list = apply(films[,c("title","year")], 1, as.list )
-  
   #+++++++++++++++++++++
   # Begin Multi-Thread'n
   #+++++++++++++++++++++
@@ -15,7 +13,7 @@ append_financials = function(films){
   # Initiate cluster
   cl = makeCluster(no_cores)
   
-  results = parLapply(cl, film_list, get_financials)
+  test = parLapply(cl, films$title, get_financials)
   
   stopCluster(cl)
   
@@ -23,9 +21,9 @@ append_financials = function(films){
   # End Multi-Thread'n
   #+++++++++++++++++++
   
-  films$intl_revenue = sapply(results, "[", 1)
+  films$intl_revenue = sapply(test, "[", 1)
   
-  films$prod_cost = sapply(results, "[", 2)
+  films$prod_cost = sapply(test, "[", 2)
   
   films$profit = films$intl_revenue - films$prod_cost
   

@@ -76,7 +76,7 @@ get_financials = function(film) {
     return(c(NA,NA))
     
   })
-  
+
   return(v)
   
 }
