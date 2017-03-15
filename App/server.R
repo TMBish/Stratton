@@ -27,6 +27,7 @@ shinyServer(function(input, output, session) {
     sel_films_comp = append_financials(sel_films)
     
     # Save as the master data-set
+    revals$data_object = list()
     revals$data_object$data = sel_films_comp
     
     # Update the reactive vals object

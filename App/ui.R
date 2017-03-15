@@ -1,4 +1,3 @@
-# Define UI for application that draws a histogram
 shinyUI(
   
   fluidPage(useShinyjs(),
@@ -21,31 +20,31 @@ shinyUI(
                 fluidRow(
                   column(1, tags$img(id = "header-logo",src = "icon.png")),
                   column(1,
-                          h1(id = "strat-title", "Stratton")
+                         h1(id = "strat-title", "Stratton")
                   ),
                   # author info
                   div(id = "app-details",
-                  column(2, offset= 8,
-                         tags$p(
-                           span(
-                             style = "font-size: 1.2em",
-                             HTML("&bull;"),
-                             span("Created by "),
-                             a("Tom Bishop", href = "https://github.com/TMBish/"),
-                             HTML("&bull;")
-                           )
-                         ),
-                         tags$p(
-                           span(
-                             style = "font-size: 1.2em",
-                             HTML("&bull;"),
-                             span("Code"),
-                             a("on GitHub", href = "https://github.com/TMBish/Stratton"),
-                             HTML("&bull;")
-                           )
-                         )
-                  )
-                ))
+                      column(2, offset= 8,
+                             tags$p(
+                               span(
+                                 style = "font-size: 1.2em",
+                                 HTML("&bull;"),
+                                 span("Created by "),
+                                 a("Tom Bishop", href = "https://github.com/TMBish/"),
+                                 HTML("&bull;")
+                               )
+                             ),
+                             tags$p(
+                               span(
+                                 style = "font-size: 1.2em",
+                                 HTML("&bull;"),
+                                 span("Code"),
+                                 a("on GitHub", href = "https://github.com/TMBish/Stratton"),
+                                 HTML("&bull;")
+                               )
+                             )
+                      )
+                  ))
             ),
             
             
@@ -57,7 +56,11 @@ shinyUI(
                 
             ),
             
-            
+            # Exampls Modal -------------------------------------------------------
+            bsModal("expane", "Show me some examples", "examples", size = "large",
+                    
+                    HTML(examples_html)
+            ),            
             # Inspiration Modal -------------------------------------------------------
             bsModal("searchpane", "Where did I theive this idea from?", "inspiration", size = "large",
                     
@@ -99,6 +102,15 @@ shinyUI(
                                  # App Description
                                  h3("What is Stratton?"), 
                                  br(),
+                                 wellPanel(
+                                   HTML(use_html),  
+                                   bsButton("examples", 
+                                            "Examples",
+                                            icon = icon("blind"),
+                                            style = "danger"
+                                   )
+                                 ),
+                                 
                                  wellPanel(
                                    
                                    #Customer HTML para
@@ -171,12 +183,12 @@ shinyUI(
                                                                           fluidRow(
                                                                             column(6,
                                                                                    selectInput("y_axis","Y Axis:",
-                                                                                               choices = c("Rotten Tomatoes Score", "Revenue", "Profit", "Year")
+                                                                                               choices = c("Rotten Tomatoes Score", "Revenue", "Profit", "Year", "Production Cost")
                                                                                    )
                                                                             ),
                                                                             column(6,
                                                                                    selectInput("x_axis", "X Axis:",
-                                                                                               choices = c("Revenue", "Profit","Rotten Tomatoes Score", "Year")
+                                                                                               choices = c("Revenue", "Profit","Rotten Tomatoes Score", "Year", "Production Cost")
                                                                                    )
                                                                             )
                                                                           ),

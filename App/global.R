@@ -15,10 +15,40 @@ options(stringsAsFactors = FALSE)
 sapply(list.files("./utils/", pattern = "*.R$", full.names = TRUE),source)
 
 # HTML Custom -----------------------------------------------------------
+use_html = "
+<strong> The Aim of the Game: </strong>
+<p> Use the tool to uncover an interesting, date-evidenced story about an actor or director. </p>
+"
+
+examples_html = "
+
+<h3> Samuel L Jackson </h3>
+
+<p> Sam Jackson is indeed, extremely prolific. In the 2 years of 2004-2005 he was an actor in 9 releases.
+Rotten tomatoes score is a scattergun. Good script? Bad script? Don't matter, Sam Jackson says yes and cheque please. </p>
+
+<img  align='centre' height='350' width='450' src='sam-jackson.png'></img>
+
+<h3> Tom Cruise </h3>
+
+<p> Hey, it's the 538 graph! Looks pretty comparable; my yellow cluster got a bit greedy. </p>
+
+<img  align='centre' height='350' width='450' src='tom-cruise.png'></img>
+
+<h3> Meryl Streep </h3>
+
+<p> Guess the outlier?... Mama mia. Meryl streep extremly solid. </p>
+
+<img  align='centre' height='350' width='450' src='meryl-streep.png'></img>
+
+
+
+"
+
 overview_html = "
-<p> Stratton is a hobby 
-  <a href = 'https://shiny.rstudio.com/'> shiny application </a>
-    I created in my spare time. The app allows you to do some simple investigative
+<strong> Background: </strong>
+<p> Stratton is a hobby
+  <a href = 'https://shiny.rstudio.com/'> shiny application </a>. The app allows you to do some simple investigative
     analysis of your favourite actors and directors.
     <br> <br>
     The app also showcases some of
@@ -28,7 +58,7 @@ overview_html = "
     <br> <br>
 
     Aside from <a href = 'http://www.abc.net.au/atthemovies/img/2004/about/david_large.jpg'> the obvious </a> 
-    a more detailed discusion of my inspiration can be found by clicking the button below:
+    click below to find out what inspired this app:
 <p>
 "
 
@@ -76,7 +106,8 @@ dim_map = function(dim) {
                "Rotten Tomatoes Score" = "rating",
                "Revenue" = "intl_revenue",
                "Year" = "year",
-               "Profit" = "profit")
+               "Profit" = "profit",
+               "Production Cost" = "prod_cost")
 }
 
 # Type-ahead Lists ---------------------------------------------------------

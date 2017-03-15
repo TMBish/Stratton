@@ -27,7 +27,7 @@ chart_scatter_h = function(data_object, # Data object
       dirc = switch(num, "1" = "y", "2" = "x")
       if (axis == 'rating'){
         format = paste0("this.",dirc," + '%'")
-      } else if (axis == 'intl_revenue' || axis == 'profit') {
+      } else if (axis == 'intl_revenue' || axis == 'profit' || axis == "prod_cost") {
         format = paste0("'$' + (this.", dirc, "/1000000).toFixed(0) + 'm'")
       } else if (axis == 'year') {
         format = paste0("this.", dirc)
@@ -45,7 +45,8 @@ chart_scatter_h = function(data_object, # Data object
                                      "rating" = "Rotten Tomatoes Score",
                                      "intl_revenue" = "Box Office Revenue",
                                      "year" = "Year",
-                                     "profit" = "Profit")
+                                     "profit" = "Profit",
+                                     "prod_cost" = "Production Cost")
       
       # Formmat for the tooltip
       c_atr[[i]]$tooltip_form =  tool_format(axes[axis],axis)
@@ -58,10 +59,12 @@ chart_scatter_h = function(data_object, # Data object
                               "rating" = 0,
                               "intl_revenue" = 0,
                               "profit" = 0,
+                              "prod_cost" = 0,
                               "year" = min(df[,axes[axis]]))
       c_atr[[i]]$max = switch(axes[axis],
                               "rating" = 100,
                               "intl_revenue" = 1.05 * max(df[,axes[axis]]),
+                              "prod_cost" = 1.05 * max(df[,axes[axis]]),
                               "profit" = 1.05 * max(df[,axes[axis]], na.rm = TRUE),
                               "year" = max(df[,axes[axis]]))
       
