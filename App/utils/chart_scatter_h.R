@@ -10,7 +10,7 @@ chart_scatter_h = function(data_object, # Data object
   require(dplyr)
   require(stringr)
   
-  tryCatch({
+  c = tryCatch({
     # For shorter code m8
     df = data_object$data
     
@@ -105,6 +105,7 @@ chart_scatter_h = function(data_object, # Data object
     
     output = 
       base %>%
+      hc_add_theme(stratton_thm) %>%
       hc_plotOptions(
         divBackgroundImage = "osiris-small.png",
         scatter = list(marker = list(radius = 6))
@@ -185,6 +186,7 @@ chart_scatter_h = function(data_object, # Data object
     
   })
   
+  return(c)
   
   
 }

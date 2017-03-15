@@ -1,16 +1,10 @@
 stratton_thm = hc_theme_merge(
-  hc_theme_elementary(),
+  hc_theme_smpl(),
   hc_theme(
     chart = list(
+      backgroundColor = "transparent",
       style = list(
-        fontFamily = 'Arial',
-        backgroundColor = NULL,
-        plotBackgroundColor = NULL
-      )
-    ),
-    title = list(
-      style = list(
-        color = 'white'
+        fontFamily = 'Arvo'
       )
     )
   )

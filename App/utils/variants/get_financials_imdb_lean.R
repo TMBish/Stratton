@@ -19,9 +19,6 @@ get_financials = function(filmlist) {
     film = filmlist$title
     year = as.integer(filmlist$year)
     
-    print(film)
-    print(year)
-    
     film = str_replace_all(film," ", "+")
     search_url = sprintf("http://www.imdb.com/find?q=%s&s=exaxt_match=True&tt=on", film)
     

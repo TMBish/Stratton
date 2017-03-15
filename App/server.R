@@ -110,12 +110,13 @@ shinyServer(function(input, output, session) {
       isolate({
         iso_title = input$search_input
         iso_data = revals$data_object
+        
       })
-
+      
       revals$data_object$data= 
         filter(iso_data$data, 
-                 role %in% input$role_type)
-
+               role %in% input$role_type)
+      
       
       # Update the reactive vals object
       revals$chart = chart_scatter_h(iso_data,

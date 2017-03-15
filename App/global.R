@@ -65,7 +65,7 @@ Anyway, mine's not exactly the same and includes some technical features that I 
 "
 # Load Timer --------------------------------------------------------------
 load_data = function() {
-  Sys.sleep(2)
+  Sys.sleep(1)
   shinyjs::hide("loading_page")
   shinyjs::show("app_body")
 }
