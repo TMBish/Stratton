@@ -14,11 +14,11 @@ runGithub("TMBish/Stratton")
 
 ## Issues & Improvements
 
-* The movie timeline tab
-* Redirect financial scraping to a more robust and complete data source
-	+ Box office mojo currently
-	+ Crap URL system and movie coverage leading to lots of missing data
-	+ Re-rote for imdb (in the variants sub-folder) but it was too slow 
-* Add error region for LOESS regression - looks nicer that way
-* Add functionality to dynamically label clusters a la 538
+* __Add:__ Movie timeline tab in nice bootstrap template
+* __Fix:__ Redirect financial info scraping to a more robust and complete data source
+	+ Getting from [Box Office Mojo](http://www.boxofficemojo.com/) currently
+	+ They have a really crap URL system leading to lots of missing financial data in stratton (for example [smh](http://www.boxofficemojo.com/movies/?id=mastermind.htm))
+	+ Did re-write for imdb (in the variants sub-folder) but it was too slow 
+* __Add:__ error region for LOESS regression - looks nicer that way
+* __Add:__ functionality to dynamically label clusters a la 538
 
