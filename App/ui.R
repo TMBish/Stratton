@@ -28,20 +28,15 @@ shinyUI(
                              tags$p(
                                span(
                                  style = "font-size: 1.2em",
-                                 HTML("&bull;"),
                                  span("Created by "),
-                                 a("Tom Bishop", href = "https://github.com/TMBish/"),
-                                 HTML("&bull;")
+                                 a("Tom Bishop", href = "https://github.com/TMBish/")
                                )
                              ),
                              tags$p(
                                span(
                                  style = "font-size: 1.2em",
-                                 HTML("&bull;"),
                                  span("Code"),
-                                 a("on GitHub", href = "https://github.com/TMBish/Stratton"),
-                                 HTML("&bull;")
-                               )
+                                 a("on GitHub", href = "https://github.com/TMBish/Stratton")                               )
                              )
                       )
                   ))
@@ -100,7 +95,7 @@ shinyUI(
                                  ), br(),
                                  
                                  # App Description
-                                 h3("What is Stratton?"), 
+                                 h3("Stratton Info"), 
                                  br(),
                                  wellPanel(
                                    HTML(use_html),  

@@ -47,13 +47,27 @@ get_tomatoes = function(person) {
   
   # Scraping the filmography table using rvest
   # got the Xpath / CSS id of the table
-  film_tables = tryCatch(
+  films = tryCatch(
     {
       
-      film_tables = celeb_url %>%
-        read_html() %>%
-        html_nodes(xpath = "//*[@id='filmographyTbl']") %>%
-        html_table()
+      film_tables = tryCatch({
+        #Most URLS  
+        celeb_url %>%
+          read_html() %>%
+          html_nodes(xpath = "//*[@id='filmographyTbl']") %>%
+          html_table()        
+      }, error = function(e) {
+        #Some URLS :-(
+        person_string = str_replace_all(str_replace_all(tolower(person),"[\\-\\.]"," "), " ", "-")
+        celeb_url = sprintf("https://www.rottentomatoes.com/celebrity/%s/", person_string)        
+        return(
+          celeb_url %>%
+            read_html() %>%
+            html_nodes(xpath = "//*[@id='filmographyTbl']") %>%
+            html_table()
+        )  
+      })
+      
       
       films = film_tables[[1]]
       
@@ -74,6 +88,8 @@ get_tomatoes = function(person) {
         mutate(
           rating = as.integer(rating),
           actor = person)
+      
+      return(films)
       
     }, error = function(e) {
       message("Actor or director not found")  
