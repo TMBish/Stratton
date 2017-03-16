@@ -13,10 +13,6 @@ shinyUI(
             # App Header --------------------------------------------------------
             div(id = "headerSection",
                 
-                # tags$img(
-                #   id = "header_logo",
-                #   src = "icon_black.jpg"
-                # ),
                 fluidRow(
                   column(1, tags$img(id = "header-logo",src = "icon.png")),
                   column(1,
@@ -194,6 +190,10 @@ shinyUI(
                                                                         )
                                                                  ),
                                                                  
+                                                                 #+++++++++++++++
+                                                                 # Analytics Buttons
+                                                                 #+++++++++++++++
+                                                                 
                                                                  column(6,
                                                                         wellPanel(
                                                                           
@@ -222,6 +222,10 @@ shinyUI(
                                               )
                                           )
                                  ),
+                                 
+                                 #+++++++++++++++
+                                 # Timeline
+                                 #+++++++++++++++
                                  tabPanel("Timeline",
                                           
                                           wellPanel(
@@ -230,13 +234,21 @@ shinyUI(
                                             )
                                           )
                                  ),
-                                 tabPanel("Raw Data", conditionalPanel("output.do_plot > 0",wellPanel(dataTableOutput("data_set"))))
-                               )
-                      )
-                    )
-                  )
+                                 
+                                 #+++++++++++++++
+                                 # Raw Data
+                                 #+++++++++++++++
+                                 tabPanel("Raw Data", 
+                                          conditionalPanel("output.do_plot > 0",
+                                                           wellPanel(dataTableOutput("data_set"))
+                                          )
+                                 )
               )
             )
+          )
+        )
+      )
+    )
   )
 )
 
