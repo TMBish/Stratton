@@ -133,8 +133,7 @@ chart_scatter_h = function(data_object, # Data object
                   style = list(fontStyle = "italic"),
                   text = paste0("A comparison of ", c_atr$y$label_text, " and ", c_atr$x$label_text)) %>% 
       hc_tooltip(useHTML = TRUE, headerFormat = "",
-                 # Lol below looks fucked up
-                 # This hurt my brain so much
+                 # Lol this hurt my brain so much
                  formatter = JS(
                    paste0(
                      "function(){

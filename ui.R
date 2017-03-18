@@ -134,8 +134,13 @@ shinyUI(
                                           
                                           hidden(
                                             div(id = "loading-container",
+                                                # wellPanel(
+                                                #   tags$img(src = "output.gif_path", id = "loading-spinner"),
+                                                #   h4("loading...")
+                                                # )
+                                                
                                                 wellPanel(
-                                                  tags$img(src = "box.gif", id = "loading-spinner"),
+                                                  htmlOutput("loading_gif"),
                                                   h4("loading...")
                                                 )
                                             )
@@ -227,7 +232,7 @@ shinyUI(
                                  # Timeline
                                  #+++++++++++++++
                                  tabPanel("Timeline",
-                                          
+                                          br(),
                                           wellPanel(
                                             div(id="timeline",
                                                 h3("Currently Under Development")
@@ -239,16 +244,17 @@ shinyUI(
                                  # Raw Data
                                  #+++++++++++++++
                                  tabPanel("Raw Data", 
+                                          br(),
                                           conditionalPanel("output.do_plot > 0",
                                                            wellPanel(dataTableOutput("data_set"))
                                           )
                                  )
+                               )
+                      )
+                    )
+                  )
               )
             )
-          )
-        )
-      )
-    )
   )
 )
 

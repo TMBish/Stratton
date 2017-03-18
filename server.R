@@ -13,10 +13,28 @@ shinyServer(function(input, output, session) {
     chart = NULL # Scatter chart object
   )
   
+  # Loading gif
+  gif_path = reactive({
+    index = sample(1:6, 1)
+    gif_path = paste0("./gifs/gif_",index,".gif")
+    return(gif_path)
+  })
+  
+  output$loading_gif = renderUI({
+    
+    if (is.null(gif_path())) {
+      return(tags$img(src = "./gifs/gif_1.gif", id = "loading-spinner"))    
+    }
+    
+    return(tags$img(src = gif_path(), id = "loading-spinner"))    
+    
+  })
+  
   
   # Update data set on user search
   observeEvent(input$search, {
-    
+
+    observe_me = gif_path()
     #Turn off plot
     shinyjs::hide("chart_content")
     shinyjs::show("loading-container")

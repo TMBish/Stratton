@@ -51,13 +51,13 @@ get_tomatoes = function(person) {
     {
       
       film_tables = tryCatch({
-        #Most URLS  
+        #Most URLS "Tom_Bishop"  
         celeb_url %>%
           read_html() %>%
           html_nodes(xpath = "//*[@id='filmographyTbl']") %>%
           html_table()        
       }, error = function(e) {
-        #Some URLS :-(
+        #Some URLS randomly "Tom-Bishop" feck me
         person_string = str_replace_all(str_replace_all(tolower(person),"[\\-\\.]"," "), " ", "-")
         celeb_url = sprintf("https://www.rottentomatoes.com/celebrity/%s/", person_string)        
         return(
