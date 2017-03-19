@@ -141,7 +141,7 @@ shinyUI(
                                                 
                                                 wellPanel(
                                                   htmlOutput("loading_gif"),
-                                                  h4("loading...")
+                                                  h3("loading...")
                                                 )
                                             )
                                           ),
