@@ -6,7 +6,25 @@ Stratton
 
 Visit stratton at my website - hosted here.
 
-If you want to play around with it on your local machine use shiny's sweet rungithub function:
+If you want to play around with it on your local machine you can do so pretty easily. 
+
+### Step 1
+
+Get some packages you might not already have:
+
+```R
+# Packs on CRAN
+cran_packs = c("shinyBS", "shinyjs", "DT", "highcharter")
+lapply(cran_packs, install.packages)
+
+# Shiny Sky
+library(devtools)
+install_github("AnalytixWare/shinysky")
+
+```
+### Step 2
+
+Thank Rstudio for thier *runGithub* function:
 
 ```R
 runGithub("TMBish/Stratton")
