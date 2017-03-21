@@ -10,7 +10,8 @@ shinyServer(function(input, output, session) {
     clstr = FALSE, # Control when clustering is graphed
     loess = FALSE, # Control when loess is graphed
     do_plot = 0, # Turn off displays when App is opened
-    chart = NULL # Scatter chart object
+    chart = NULL, # Scatter chart object
+    init_gif = 1
   )
   
   output$loading_gif = renderUI({
@@ -53,15 +54,20 @@ shinyServer(function(input, output, session) {
     revals$do_plot = 1
     shinyjs::show("chart_content")
     shinyjs::hide("loading-container")
+    revals$init_gif = 0
 
   })
   
-  # Plot Control ------------------------------------------------------------
+  # Controls ------------------------------------------------------------
   output$do_plot = renderText({
     return(revals$do_plot)
   })
   outputOptions(output, 'do_plot', suspendWhenHidden=FALSE)
   
+  output$init_gif = renderText({
+    return(revals$init_gif)
+  })
+  outputOptions(output, 'init_gif', suspendWhenHidden=FALSE)
   
   # Re-run cluster ----------------------------------------------------------
   observeEvent(input$cluster, {

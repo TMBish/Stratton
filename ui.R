@@ -134,15 +134,24 @@ shinyUI(
                                           
                                           hidden(
                                             div(id = "loading-container",
-                                                # wellPanel(
-                                                #   tags$img(src = "output.gif_path", id = "loading-spinner"),
-                                                #   h4("loading...")
-                                                # )
+
+                                                # Initial loading gif - shitty hack cause shiny's playing up
+                                                conditionalPanel("output.init_gif > 0",
+                                                   wellPanel(
+                                                     tags$img(src = paste0("./gifs/gif_",sample(1:6, 1),".gif"), id = "loading-spinner"),
+                                                     h3("loading...")
+                                                   )         
+                                                ),
                                                 
-                                                wellPanel(
-                                                  htmlOutput("loading_gif"),
-                                                  h3("loading...")
+                                                # The randomised loading gif for all subsequent searches
+                                                conditionalPanel("output.init_gif == 0",
+                                                     wellPanel(
+                                                       htmlOutput("loading_gif"),
+                                                       h3("loading...")
+                                                     )          
                                                 )
+                                                
+
                                             )
                                           ),
                                           
