@@ -14,7 +14,7 @@ shinyUI(
             div(id = "headerSection",
                 
                 fluidRow(
-                  column(1, tags$img(id = "header-logo",src = "icon.png")),
+                  column(1, tags$img(id = "header-logo",src = "icon-2.png")),
                   column(1,
                          h1(id = "strat-title", "Stratton")
                   ),
@@ -88,7 +88,7 @@ shinyUI(
                                             icon = icon("search"),
                                             style = "primary"
                                    )
-                                 ), br(),
+                                 ), br(), 
                                  
                                  # App Description
                                  h3("Stratton Info"), 
@@ -137,21 +137,20 @@ shinyUI(
 
                                                 # Initial loading gif - shitty hack cause shiny's playing up
                                                 conditionalPanel("output.init_gif > 0",
-                                                   wellPanel(
-                                                     tags$img(src = paste0("./gifs/gif_",sample(1:6, 1),".gif"), id = "loading-spinner"),
-                                                     h3("loading...")
-                                                   )         
+                                                                 wellPanel(
+                                                                   tags$img(src = paste0("./gifs/gif_",sample(1:6, 1),".gif"), id = "loading-spinner"),
+                                                                   h3("loading...")
+                                                                 )         
                                                 ),
                                                 
                                                 # The randomised loading gif for all subsequent searches
                                                 conditionalPanel("output.init_gif == 0",
-                                                     wellPanel(
-                                                       htmlOutput("loading_gif"),
-                                                       h3("loading...")
-                                                     )          
-                                                )
+                                                                 wellPanel(
+                                                                   htmlOutput("loading_gif"),
+                                                                   h3("loading...")
+                                                                 )          
+                                                )     
                                                 
-
                                             )
                                           ),
                                           
