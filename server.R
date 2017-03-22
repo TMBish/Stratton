@@ -18,7 +18,7 @@ shinyServer(function(input, output, session) {
 
     x = input$search_input
     
-    index = sample(1:6, 1)
+    index = sample(1:14, 1)
     
     gif_path = paste0("./gifs/gif_",index,".gif")
     

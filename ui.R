@@ -138,7 +138,7 @@ shinyUI(
                                                 # Initial loading gif - shitty hack cause shiny's playing up
                                                 conditionalPanel("output.init_gif > 0",
                                                                  wellPanel(
-                                                                   tags$img(src = paste0("./gifs/gif_",sample(1:6, 1),".gif"),
+                                                                   tags$img(src = paste0("./gifs/gif_",sample(1:14, 1),".gif"),
                                                                             width = 600,
                                                                             id = "loading-spinner"),
                                                                    h3("loading...")

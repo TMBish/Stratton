@@ -118,13 +118,20 @@ chart_scatter_h = function(data_object, # Data object
         labels = list(formatter = JS(paste0("function(){return(",c_atr$y$label_form,")}"))), 
         min = c_atr$y$min,
         max = c_atr$y$max,
-        linewidth = 1
+        linewidth = 1,
+        gridLineColor = "#737373",
+        lineColor = "#737373",
+        gridLineWidth = 0.3
       ) %>%
       hc_xAxis(
         title = list(text = c_atr$x$label_text),
         labels = list(formatter = JS(paste0("function(){return(",c_atr$x$label_form,")}"))),
         min = c_atr$x$min,
-        max = c_atr$x$max
+        max = c_atr$x$max,
+        gridLineColor = "#737373",
+        gridLineWidth = 0.3
+        
+        
       ) %>%    
       hc_title(text = actor,
                style = list(fontWeight = "bold"),
