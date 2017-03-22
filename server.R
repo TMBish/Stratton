@@ -11,7 +11,7 @@ shinyServer(function(input, output, session) {
     loess = FALSE, # Control when loess is graphed
     do_plot = 0, # Turn off displays when App is opened
     chart = NULL, # Scatter chart object
-    init_gif = 1
+    init_gif = 1 # Toggle the init gif panel
   )
   
   output$loading_gif = renderUI({
@@ -22,10 +22,9 @@ shinyServer(function(input, output, session) {
     
     gif_path = paste0("./gifs/gif_",index,".gif")
     
-    return(tags$img(src = gif_path, id = "loading-spinner"))    
+    return(tags$img(src = gif_path, id = "loading-spinner", width = 600))    
     
   })
-  
   
   # Update data set on user search
   observeEvent(input$search, {

@@ -27,7 +27,6 @@ body, label, input, button, select {
 
 #loading-spinner {
 	margin: auto;
-	width: 150px;
 }
 
 #loading-container {
