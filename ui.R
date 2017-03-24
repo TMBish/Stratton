@@ -255,6 +255,35 @@ shinyUI(
                                  #+++++++++++++++
                                  tabPanel("Raw Data", 
                                           br(),
+                                          
+                                          #+++++++++++++++
+                                          # Loading Gif
+                                          #+++++++++++++++
+                                          
+                                          hidden(
+                                            div(id = "loading-container",
+                                                
+                                                # Initial loading gif - shitty hack cause shiny's playing up
+                                                conditionalPanel("output.init_gif > 0",
+                                                                 wellPanel(
+                                                                   tags$img(src = paste0("./gifs/gif_",sample(1:14, 1),".gif"),
+                                                                            width = 600,
+                                                                            id = "loading-spinner"),
+                                                                   h3("loading...")
+                                                                 )         
+                                                ),
+                                                
+                                                # The randomised loading gif for all subsequent searches
+                                                conditionalPanel("output.init_gif == 0",
+                                                                 wellPanel(
+                                                                   htmlOutput("loading_gif"),
+                                                                   h3("loading...")
+                                                                 )          
+                                                )     
+                                                
+                                            )
+                                          ),
+                                          
                                           conditionalPanel("output.do_plot > 0",
                                                            wellPanel(dataTableOutput("data_set"))
                                           )

@@ -16,8 +16,6 @@ shinyServer(function(input, output, session) {
   
   output$loading_gif = renderUI({
 
-    x = input$search_input
-    
     index = sample(1:14, 1)
     
     gif_path = paste0("./gifs/gif_",index,".gif")
