@@ -16,9 +16,9 @@ shinyServer(function(input, output, session) {
   
   output$loading_gif = renderUI({
 
-    index = sample(1:14, 1)
+    gifs = list.files("./gifs", full.names = TRUE)
     
-    gif_path = paste0("./gifs/gif_",index,".gif")
+    gif_path = sample(gifs, 1)
     
     return(tags$img(src = gif_path, id = "loading-spinner", width = 600))    
     
