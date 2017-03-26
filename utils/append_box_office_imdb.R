@@ -10,7 +10,7 @@ append_financials = function(films){
   #+++++++++++++++++++++
   
   # Use most of the comp cores
-  no_cores = detectCores() - 2
+  no_cores = max(detectCores() - 2,1)
   
   # Initiate cluster
   cl = makeCluster(no_cores)
