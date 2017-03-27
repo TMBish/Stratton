@@ -47,6 +47,6 @@ Temporary Items
 .apdisk
 .Rproj.user
 www/gifs/
-.Rhistory
-.Rproj
+*.Rhistory
+*.Rproj
 
