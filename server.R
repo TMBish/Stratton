@@ -11,18 +11,32 @@ shinyServer(function(input, output, session) {
     loess = FALSE, # Control when loess is graphed
     do_plot = 0, # Turn off displays when App is opened
     chart = NULL, # Scatter chart object
-    init_gif = 1 # Toggle the init gif panel
+    init_gif = 1, # Toggle the init gif panel
+    gif_path = "./gifs/gif_1.gif"
   )
   
-  output$loading_gif = renderUI({
-
-    gifs = list.files("./gifs", full.names = TRUE)
-    
-    gif_path = sample(gifs, 1)
-    
-    return(tags$img(src = gif_path, id = "loading-spinner", width = 600))    
-    
-  })
+  # observe({
+  #   
+  #   if(revals$init_gif==0){
+  #     
+  #     gifs = list.files("./www/gifs", full.names = TRUE)
+  #     
+  #     gif_path = str_replace(sample(gifs, 1),"/www","")
+  #     
+  #     revals$gif_path = gif_path
+  #     print(revals$gif_path)
+  #   }
+  #   
+  #   
+  # })
+  # 
+  # output$loading_gif = renderUI({
+  #   print("test me")
+  #   print(revals$gif_path)
+  #   gif = tags$img(src = revals$gif_path, id = "loading-spinner", width = 600)
+  #   
+  #   return(gif)
+  # })
   
   # Update data set on user search
   observeEvent(input$search, {

@@ -57,7 +57,7 @@ body, label, input, button, select {
 	margin-top: 25px
 }
 
-#headerSection {
+#header-section {
   margin: -25px 0 20px;
   color: #FAFAFA;
   padding: 15px 20px;
@@ -65,7 +65,7 @@ body, label, input, button, select {
   background: #000000;
 } 
 
-#headerSection a {
+#header-section a {
   color: white !important;
   text-decoration: underline;
 }

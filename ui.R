@@ -11,7 +11,7 @@ shinyUI(
             
             
             # App Header --------------------------------------------------------
-            div(id = "headerSection",
+            div(id = "header-section",
                 
                 fluidRow(
                   column(1, tags$img(id = "header-logo",src = "icon-2.png")),
@@ -134,24 +134,25 @@ shinyUI(
                                           
                                           hidden(
                                             div(id = "loading-container",
-
-                                                # Initial loading gif - shitty hack cause shiny's playing up
-                                                conditionalPanel("output.init_gif > 0",
-                                                                 wellPanel(
-                                                                   tags$img(src = paste0("./gifs/gif_",sample(1:14, 1),".gif"),
-                                                                            width = 600,
-                                                                            id = "loading-spinner"),
-                                                                   h3("loading...")
-                                                                 )         
-                                                ),
                                                 
-                                                # The randomised loading gif for all subsequent searches
-                                                conditionalPanel("output.init_gif == 0",
+                                                # Initial loading gif - shitty hack cause shiny's playing up
+                                                # conditionalPanel("output.init_gif > 0",
                                                                  wellPanel(
-                                                                   htmlOutput("loading_gif"),
-                                                                   h3("loading...")
-                                                                 )          
-                                                )     
+                                                                   tags$img(src = "box.gif", 
+                                                                              #paste0("./gifs/gif_",sample(1:14, 1),".gif"),
+                                                                            width = 150,
+                                                                            id = "loading-spinner"),
+                                                                   h3("searching the web...")
+                                                                 )         
+                                                # ),
+                                                
+                                                # # The randomised loading gif for all subsequent searches
+                                                # conditionalPanel("output.init_gif == 0",
+                                                #                  wellPanel(
+                                                #                    uiOutput("loading_gif"),
+                                                #                    h3("searching the web...")
+                                                #                  )          
+                                                # )     
                                                 
                                             )
                                           ),
@@ -255,34 +256,6 @@ shinyUI(
                                  #+++++++++++++++
                                  tabPanel("Raw Data", 
                                           br(),
-                                          
-                                          #+++++++++++++++
-                                          # Loading Gif
-                                          #+++++++++++++++
-                                          
-                                          hidden(
-                                            div(id = "loading-container",
-                                                
-                                                # Initial loading gif - shitty hack cause shiny's playing up
-                                                conditionalPanel("output.init_gif > 0",
-                                                                 wellPanel(
-                                                                   tags$img(src = paste0("./gifs/gif_",sample(1:14, 1),".gif"),
-                                                                            width = 600,
-                                                                            id = "loading-spinner"),
-                                                                   h3("loading...")
-                                                                 )         
-                                                ),
-                                                
-                                                # The randomised loading gif for all subsequent searches
-                                                conditionalPanel("output.init_gif == 0",
-                                                                 wellPanel(
-                                                                   htmlOutput("loading_gif"),
-                                                                   h3("loading...")
-                                                                 )          
-                                                )     
-                                                
-                                            )
-                                          ),
                                           
                                           conditionalPanel("output.do_plot > 0",
                                                            wellPanel(dataTableOutput("data_set"))
