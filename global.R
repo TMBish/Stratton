@@ -1,6 +1,5 @@
 library(readr)
 library(dplyr)
-library(hrbrthemes)
 library(highcharter)
 library(shinyjs)
 library(shiny)
