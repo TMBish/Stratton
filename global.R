@@ -6,6 +6,8 @@ library(shiny)
 library(shinyBS)
 library(shinysky)
 library(DT)
+library(stringr)
+library(assertthat)
 
 options(stringsAsFactors = FALSE)
 

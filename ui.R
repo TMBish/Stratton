@@ -71,8 +71,16 @@ shinyUI(
                                  # Search Control Panel
                                  h3("Control Panel"), 
                                  br(),
-                                 wellPanel(         
+                                 wellPanel(       
                                    
+                                   #Data Sorce
+                                   selectInput("source", label = "Choose a data source", 
+                                               choices = c("IMDB", "Box Office Mojo")),
+                                   
+                                   
+                                   bsTooltip("source", "IMDB searches will be much slower but produce a more complete dataset.",
+                                             "right", options = list(container = "body")),
+                                  
                                    #Search Label
                                    tags$label("Enter the name of an Actor or Director:"),
                                    # Search Input Box
@@ -229,7 +237,7 @@ shinyUI(
                                                                           ),
                                                                           
                                                                           fluidRow(
-                                                                            column(6, tags$label(id = "loess-label", "Add LOESS regression line:")),
+                                                                            column(6, tags$label(id = "loess-label", "Add Trend Line:")),
                                                                             column(6, bsButton("loess", " Smooth", icon = icon("line-chart"), style = "primary"))
                                                                           )
                                                                         )

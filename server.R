@@ -45,10 +45,12 @@ shinyServer(function(input, output, session) {
     shinyjs::hide("chart_content")
     shinyjs::show("loading-container")
 
+    #Source
+    srce = input$source
     # Get rotten tomatoes data for this person
     sel_films = get_tomatoes(input$search_input)
     # Get box office data for this person
-    sel_films_comp = append_financials(sel_films)
+    sel_films_comp = append_financials(sel_films, input$source)
     
     # Save as the master data-set
     revals$data_object = list()

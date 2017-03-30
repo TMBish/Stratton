@@ -1,9 +1,9 @@
 # Append Box Office ---------------------------------------------------------
-append_financials = function(films){
+append_financials = function(films, source){
   
   require(parallel)
   
-  film_list = apply(films[,c("title","year")], 1, as.list )
+  film_list = apply(films[,c("title","year")], 1, as.list)
   
   #+++++++++++++++++++++
   # Begin Multi-Thread'n
@@ -15,7 +15,7 @@ append_financials = function(films){
   # Initiate cluster
   cl = makeCluster(no_cores)
   
-  results = parLapply(cl, film_list, get_financials)
+  results = parLapply(cl, film_list, get_financials, sauce = source)
   
   stopCluster(cl)
   
