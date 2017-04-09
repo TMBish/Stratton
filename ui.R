@@ -8,7 +8,7 @@ shinyUI(
                 includeCSS(file.path('www', 'style.css')),
                 tags$title("Stratton | Actor analytics with shiny"),
                 tags$meta(name="description", content="Use the tool to uncover an interesting, data-evidenced story about an actor or director."),
-                tags$link(rel = "image_src", href = "http://www.abc.net.au/atthemovies/img/2004/about/david_large.jpg")                
+                tags$meta(property = "og:image", content = "http://www.abc.net.au/atthemovies/img/2004/about/david_large.jpg")                
               )
             ),
             
