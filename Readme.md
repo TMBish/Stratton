@@ -2,7 +2,7 @@
 
 ## Use
 
-I've hosted this app on a personal AWS shiny server which you can access [here.](tmbish.me/shiny/stratton "Me Shiny Server")
+I've hosted this app on a personal AWS shiny server which you can access [here.](www.tmbish.me/shiny/stratton "Me Shiny Server")
 
 If you want to play around with it on your local machine you can do so pretty easily. This will also run quite a bit quicker (depending on your machine size) since I multi-threaded the webscraping which isn't utilized on the AWS VM which has only 1 core.
 
