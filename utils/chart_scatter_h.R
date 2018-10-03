@@ -85,7 +85,7 @@ chart_scatter_h = function(data_object, # Data object
       base = 
         add_clus %>%
         select(x = !!sym(x_var), y = !!sym(y_var), cluster, role, title) %>%
-        hchart("scatter", color = "#286090", hcaes(x = x, y = y))
+        hchart("scatter", hcaes(x = x, y = y, color = cluster))
       
       # Add the cluster centroids
       centroids = data_object$clusters$centers
