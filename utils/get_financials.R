@@ -56,7 +56,7 @@ get_financials = function(filmlist, sauce) {
         html_text() %>% paste0(collapse = "")
       
       cost = 
-        str_extract(block, "Budget\\:.+\\$[0-9\\,]+") %>%
+        str_extract(block, "Budget\\:.{0,}\\$[0-9\\,]+")  %>%
         str_extract("\\$[0-9\\,]+") %>%
         str_replace_all("[\\$\\,]","") %>%
         as.integer()

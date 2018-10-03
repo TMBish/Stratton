@@ -15,29 +15,6 @@ shinyServer(function(input, output, session) {
     gif_path = "./gifs/gif_1.gif"
   )
   
-  # observe({
-  #   
-  #   if(revals$init_gif==0){
-  #     
-  #     gifs = list.files("./www/gifs", full.names = TRUE)
-  #     
-  #     gif_path = str_replace(sample(gifs, 1),"/www","")
-  #     
-  #     revals$gif_path = gif_path
-  #     print(revals$gif_path)
-  #   }
-  #   
-  #   
-  # })
-  # 
-  # output$loading_gif = renderUI({
-  #   print("test me")
-  #   print(revals$gif_path)
-  #   gif = tags$img(src = revals$gif_path, id = "loading-spinner", width = 600)
-  #   
-  #   return(gif)
-  # })
-  
   # Update data set on user search
   observeEvent(input$search, {
 
@@ -146,8 +123,7 @@ shinyServer(function(input, output, session) {
       })
       
       revals$data_object$data= 
-        filter(iso_data$data, 
-               role %in% input$role_type)
+        filter(iso_data$data, role %in% input$role_type)
       
       
       # Update the reactive vals object

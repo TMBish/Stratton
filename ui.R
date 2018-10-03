@@ -26,14 +26,14 @@ shinyUI(
                       column(2, offset= 8,
                              tags$p(
                                span(
-                                 style = "font-size: 1.2em",
+                                 style = "font-size: 1em",
                                  span("Created by "),
                                  a("Tom Bishop", href = "https://github.com/TMBish/")
                                )
                              ),
                              tags$p(
                                span(
-                                 style = "font-size: 1.2em",
+                                 style = "font-size: 1em",
                                  span("Code"),
                                  a("on GitHub", href = "https://github.com/TMBish/Stratton")                               )
                              )
@@ -88,8 +88,10 @@ shinyUI(
                                    tags$label("Enter the name of an Actor or Director:"),
                                    # Search Input Box
                                    textInput.typeahead(
-                                     id = "search_input", placeholder="eg. Danny McBride",
-                                     local= typeahead_data, valueKey = "Name",
+                                     id = "search_input", 
+                                     placeholder="eg. Danny McBride",
+                                     local= typeahead_data, 
+                                     valueKey = "Name",
                                      tokens=seq(1,nrow(typeahead_data)),
                                      template = HTML("<p class='repo-language'>{{Role}}</p> <p class='repo-name'>{{Name}}</p>")
                                    ),br(),br(),
@@ -108,7 +110,7 @@ shinyUI(
                                    HTML(use_html),  
                                    bsButton("examples", 
                                             "Examples",
-                                            icon = icon("blind"),
+                                            icon = icon("fa-blind"),
                                             style = "danger"
                                    )
                                  ),
@@ -156,14 +158,6 @@ shinyUI(
                                                                    h3("searching the web...")
                                                                  )         
                                                 # ),
-                                                
-                                                # # The randomised loading gif for all subsequent searches
-                                                # conditionalPanel("output.init_gif == 0",
-                                                #                  wellPanel(
-                                                #                    uiOutput("loading_gif"),
-                                                #                    h3("searching the web...")
-                                                #                  )          
-                                                # )     
                                                 
                                             )
                                           ),
@@ -247,18 +241,6 @@ shinyUI(
                                                                  )
                                                                )
                                               )
-                                          )
-                                 ),
-                                 
-                                 #+++++++++++++++
-                                 # Timeline
-                                 #+++++++++++++++
-                                 tabPanel("Timeline",
-                                          br(),
-                                          wellPanel(
-                                            div(id="timeline",
-                                                h3("Currently Under Development")
-                                            )
                                           )
                                  ),
                                  

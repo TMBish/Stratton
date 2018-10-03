@@ -75,13 +75,17 @@ chart_scatter_h = function(data_object, # Data object
     # Build base chart
     #++++++++++++++++++
     
-    # Cheeky: Grabbed hcaes_string from the dev version of highcharter
-    # really really handy for me
     if (clstr) {
       
       add_clus = df %>% inner_join(data_object$clusters$data, by = "title")
       
-      base = hchart(add_clus, "scatter", hcaes_string(x = axes[2], y = axes[1], color = 'cluster'))
+      x_var = axes[2]
+      y_var = axes[1]
+      
+      base = 
+        add_clus %>%
+        select(x = !!sym(x_var), y = !!sym(y_var), cluster, role, title) %>%
+        hchart("scatter", color = "#286090", hcaes(x = x, y = y))
       
       # Add the cluster centroids
       centroids = data_object$clusters$centers
@@ -91,14 +95,20 @@ chart_scatter_h = function(data_object, # Data object
           hc_add_series(name = "cluster Center",
                         data = list_parse2(rev(centroids[i,])),
                         type = "scatter",
-                        marker = list(symbol = "plus", radius = 14),
+                        marker = list(symbol = "plus", radius = 8),
                         color = colorize(1:nrow(centroids))[i])
       }
       
       
     } else {
       
-      base = hchart(df, "scatter", color = "#286090",hcaes_string(x = axes[2], y = axes[1]))
+      x_var = axes[2]
+      y_var = axes[1]
+      
+      base = 
+        df %>%
+        select(x = !!sym(x_var), y = !!sym(y_var), role, title) %>%
+        hchart("scatter", color = "#286090", hcaes(x = x, y = y))
       
     }
     
@@ -111,7 +121,7 @@ chart_scatter_h = function(data_object, # Data object
       hc_add_theme(stratton_thm) %>%
       hc_plotOptions(
         divBackgroundImage = "osiris-small.png",
-        scatter = list(marker = list(radius = 6))
+        scatter = list(marker = list(radius = 4))
       ) %>%
       hc_yAxis(
         title = list(text = c_atr$y$label_text),
@@ -130,8 +140,6 @@ chart_scatter_h = function(data_object, # Data object
         max = c_atr$x$max,
         gridLineColor = "#737373",
         gridLineWidth = 0.3
-        
-        
       ) %>%    
       hc_title(text = actor,
                style = list(fontWeight = "bold"),
@@ -179,7 +187,7 @@ chart_scatter_h = function(data_object, # Data object
         hc_add_series(name = "LOESS smooth",data = data_object$loess, type = "line") %>%
         hc_plotOptions(
           line = list(
-            lineWidth = 6,
+            lineWidth = 3,
             dashStyle = "Dash",
             lineColor = "rgba(0,0,0,0.3)",
             marker = list(radius=0))

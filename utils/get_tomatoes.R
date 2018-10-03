@@ -87,7 +87,8 @@ get_tomatoes = function(person) {
         ) %>%
         mutate(
           rating = as.integer(rating),
-          actor = person)
+          actor = person
+        )
       
       return(films)
       

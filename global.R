@@ -14,6 +14,9 @@ options(stringsAsFactors = FALSE)
 # Load Utils --------------------------------------------------------------
 sapply(list.files("./utils/", pattern = "*.R$", full.names = TRUE),source)
 
+filter = dplyr::filter
+lag = dplyr::lag
+
 # HTML Custom -----------------------------------------------------------
 use_html = read_file("./data/html_1.html")
 

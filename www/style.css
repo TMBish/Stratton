@@ -8,6 +8,10 @@ body, label, input, button, select {
   font-family: "Arial";
 }
 
+#search_input {
+  font-size: 8px;
+}
+
 #header-logo {
   height: 70px;
   width: 75px;
